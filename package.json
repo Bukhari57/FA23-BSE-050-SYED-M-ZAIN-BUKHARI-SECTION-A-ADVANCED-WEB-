@@ -1,0 +1,24 @@
+{
+  "name": "fa23-bse-050-syed-m-zain-bukhari-section-a-advanced-web-",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bukhari57/FA23-BSE-050-SYED-M-ZAIN-BUKHARI-SECTION-A-ADVANCED-WEB-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Bukhari57/FA23-BSE-050-SYED-M-ZAIN-BUKHARI-SECTION-A-ADVANCED-WEB-/issues"
+  },
+  "homepage": "https://github.com/Bukhari57/FA23-BSE-050-SYED-M-ZAIN-BUKHARI-SECTION-A-ADVANCED-WEB-#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
