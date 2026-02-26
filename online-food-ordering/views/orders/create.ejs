@@ -1,0 +1,14 @@
+<%- include('../partials/header') %>
+<h1>Checkout</h1>
+<form action="/orders" method="POST" id="checkoutForm">
+  <div id="orderCart" class="mb-3"></div>
+  <div class="mb-3">
+    <label class="form-label">Customer Name</label>
+    <input class="form-control" name="customerName" required>
+  </div>
+  <input type="hidden" name="cartItems" id="cartItems">
+  <input type="hidden" name="totalPrice" id="totalPrice">
+  <button class="btn btn-success btn-gradient">Place Order</button>
+  <a href="/menuitems" class="btn btn-secondary">Back to Menu</a>
+</form>
+<%- include('../partials/footer') %>

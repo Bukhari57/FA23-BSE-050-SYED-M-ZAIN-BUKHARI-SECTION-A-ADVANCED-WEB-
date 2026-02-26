@@ -1,0 +1,135 @@
+/* custom styles can go here */
+body {
+    padding-bottom: 40px;
+    transition: background-color 0.3s, color 0.3s;
+    background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
+}
+
+/* card hover tilt and shadow */
+.menu-card .card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.menu-card .card:hover {
+    transform: perspective(1000px) rotateX(3deg) rotateY(-3deg) scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* card image */
+.card-img-top {
+    height: 180px;
+    object-fit: cover;
+    border-top-left-radius: .5rem;
+    border-top-right-radius: .5rem;
+}
+
+/* category badge */
+.category-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+}
+
+/* premium highlight */
+.menu-card .card-body { position: relative; }
+.menu-card .card .price { font-size: 1.1rem; color: #222; }
+
+/* Hero styles */
+.hero {
+    background: linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15)), url('https://images.unsplash.com/photo-1543352634-8f0d0f5c6b63?q=80&w=1600&auto=format&fit=crop');
+    background-size: cover; background-position: center;
+}
+.hero-title { text-shadow: 0 6px 30px rgba(0,0,0,0.5); }
+.hero-sub { opacity: 0.95; }
+.hero-cta { box-shadow: 0 8px 24px rgba(240,95,160,0.25); }
+
+/* Glassmorphism card */
+.menu-card .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.75));
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+}
+.menu-card .card:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    pointer-events: none;
+}
+
+/* price badge */
+.price-badge {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    background: linear-gradient(135deg, #ff6b6b, #f06595);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(240,100,140,0.2);
+}
+
+/* rating */
+.rating { color: #ffd166; font-size: 0.9rem; }
+
+/* advanced button ripple */
+.btn-gradient { position: relative; overflow: hidden; }
+.btn-gradient:after {
+    content: '';
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    width: 0; height: 0; background: rgba(255,255,255,0.15); border-radius: 50%;
+    transition: width 0.4s ease, height 0.4s ease, opacity 0.6s ease;
+}
+.btn-gradient:active:after { width: 200px; height: 200px; opacity: 0; transition: 0s; }
+
+/* responsive tweaks */
+@media (max-width: 576px) {
+  .card-img-top { height: 140px; }
+  .hero { padding: 2rem 0; }
+}
+
+/* gradient buttons */
+.btn-gradient {
+    background: linear-gradient(45deg, #ff6b6b, #f06595);
+    color: #fff;
+    border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-gradient:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* dark mode */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+body.dark-mode .navbar {
+    background-color: #222 !important;
+}
+body.dark-mode .card {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+body.dark-mode .modal-content {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+body.dark-mode .table {
+    color: #e0e0e0;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}

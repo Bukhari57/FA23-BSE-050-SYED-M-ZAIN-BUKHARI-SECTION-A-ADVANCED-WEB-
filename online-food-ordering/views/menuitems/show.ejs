@@ -1,0 +1,15 @@
+<%- include('../partials/header') %>
+<h1>Menu Item Details</h1>
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title"><%= item.name %></h5>
+    <p class="card-text"><%= item.description %></p>
+    <p class="card-text"><strong>Price:</strong> $<%= item.price %></p>
+    <a href="/menuitems/<%= item.id %>/edit" class="btn btn-warning">Edit</a>
+    <form action="/menuitems/<%= item.id %>?_method=DELETE" method="POST" class="d-inline">
+      <button class="btn btn-danger">Delete</button>
+    </form>
+    <a href="/menuitems" class="btn btn-secondary">Back</a>
+  </div>
+</div>
+<%- include('../partials/footer') %>

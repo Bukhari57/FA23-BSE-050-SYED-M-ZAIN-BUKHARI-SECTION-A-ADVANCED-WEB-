@@ -1,0 +1,33 @@
+{
+  "name": "online-food-ordering",
+  "version": "1.0.0",
+  "description": "Online Food Ordering System using Express.js, Sequelize, SQLite3, EJS, and Bootstrap",
+  "main": "app.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "express",
+    "sequelize",
+    "sqlite3",
+    "ejs",
+    "bootstrap",
+    "food-ordering"
+  ],
+  "author": "Syed Zain Bukhari",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "bootstrap": "^5.3.1",
+    "ejs": "^3.1.9",
+    "express": "^5.2.1",
+    "method-override": "^3.0.0",
+    "sequelize": "^6.32.1",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

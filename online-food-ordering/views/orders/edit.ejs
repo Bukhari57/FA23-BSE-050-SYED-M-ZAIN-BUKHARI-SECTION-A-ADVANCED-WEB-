@@ -1,0 +1,28 @@
+<%- include('../partials/header') %>
+<h1>Edit Order #<%= order.id %></h1>
+<form action="/orders/<%= order.id %>?_method=PUT" method="POST">
+  <div class="mb-3">
+    <label class="form-label">Customer Name</label>
+    <input class="form-control" name="customerName" value="<%= order.customerName %>" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Status</label>
+    <select class="form-control" name="status">
+      <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+      <option value="Preparing" <%= order.status === 'Preparing' ? 'selected' : '' %>>Preparing</option>
+      <option value="Completed" <%= order.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+      <option value="Cancelled" <%= order.status === 'Cancelled' ? 'selected' : '' %>>Cancelled</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <h5>Items in order</h5>
+    <ul class="list-group">
+      <% order.items.forEach(i => { %>
+        <li class="list-group-item"><%= i.name %> x<%= i.quantity %></li>
+      <% }); %>
+    </ul>
+  </div>
+  <button class="btn btn-success">Update Order</button>
+  <a href="/orders" class="btn btn-secondary">Cancel</a>
+</form>
+<%- include('../partials/footer') %>
