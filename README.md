@@ -27,14 +27,6 @@ It demonstrates **CRUD operations, JWT authentication, input validation, CORS, a
 
 ---
 
-## Installation
-
-1. **Clone the repository:**
-
-```bash
-git clone <your-repo-url>
-cd student-api
----
 
 ## Project Output
 
