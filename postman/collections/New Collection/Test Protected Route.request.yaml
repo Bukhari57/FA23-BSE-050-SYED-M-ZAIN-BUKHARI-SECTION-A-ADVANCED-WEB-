@@ -1,0 +1,8 @@
+$kind: http-request
+name: Test Protected Route
+url: http://localhost:3000/profile
+method: GET
+headers:
+  Authorization: Bearer
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzcyNzM4NjY4LCJleHAiOjE3NzI3NDIyNjh9.M91z3eBGAiHuwccbrnb6AmM3gX38hPp9cgcSwK0LgGQ
+order: 3671619580607900

@@ -1,0 +1,5 @@
+$kind: http-request
+name: http://localhost:3000/students
+url: http://localhost:3000/students
+method: GET
+order: 4348530775837573
