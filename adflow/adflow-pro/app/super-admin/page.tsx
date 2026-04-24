@@ -2,6 +2,8 @@
 
 import { FormEvent, useEffect, useState } from 'react';
 
+type User = { id: string; name: string; email: string; role: string };
+
 type Report = {
   totalUsers: number;
   totalAds: number;
@@ -18,6 +20,8 @@ type UserView = { id: string; name: string; email: string; role: string };
 
 export default function SuperAdminDashboard() {
   const [token, setToken] = useState('');
+  const [user, setUser] = useState<User | null>(null);
+  const [statusMessage, setStatusMessage] = useState('Loading super admin session...');
   const [reports, setReports] = useState<Report | null>(null);
   const [packages, setPackages] = useState<Package[]>([]);
   const [settings, setSettings] = useState<Setting[]>([]);
@@ -33,11 +37,28 @@ export default function SuperAdminDashboard() {
 
   useEffect(() => {
     const saved = localStorage.getItem('adflow-token');
-    if (saved) setToken(saved);
+    if (saved) {
+      setToken(saved);
+      fetch('/api/auth/me', { headers: { Authorization: `Bearer ${saved}` } })
+        .then((res) => {
+          if (!res.ok) throw new Error('Unauthorized');
+          return res.json();
+        })
+        .then((data) => {
+          setUser(data);
+          setStatusMessage('Logged in as ' + data.role);
+        })
+        .catch(() => {
+          setUser(null);
+          setStatusMessage('Please login with a super admin account.');
+        });
+    } else {
+      setStatusMessage('Please login to view the super admin dashboard.');
+    }
   }, []);
 
   useEffect(() => {
-    if (!token) return;
+    if (!token || !user || user.role !== 'SUPER_ADMIN') return;
 
     fetch('/api/admin/reports', { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => res.json())
@@ -109,6 +130,18 @@ export default function SuperAdminDashboard() {
     } else {
       setMessage(body.error || 'Failed to create setting');
     }
+  }
+
+  if (!token) {
+    return <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">{statusMessage}</div>;
+  }
+
+  if (!user) {
+    return <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">{statusMessage}</div>;
+  }
+
+  if (user.role !== 'SUPER_ADMIN') {
+    return <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">Access denied. Super admins only.</div>;
   }
 
   return (
@@ -237,7 +270,7 @@ export default function SuperAdminDashboard() {
                 <p className="text-slate-400">{user.email}</p>
                 <p className="text-slate-400">Role: {user.role}</p>
               </div>
-            ))}
+            ))) }
         </div>
       </section>
 

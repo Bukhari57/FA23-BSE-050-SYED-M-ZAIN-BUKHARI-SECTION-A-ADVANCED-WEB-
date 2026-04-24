@@ -2,10 +2,14 @@
 
 import { FormEvent, useEffect, useState } from 'react';
 
+type User = { id: string; name: string; email: string; role: string };
+
 type Payment = { id: string; transactionId: string; proofUrl: string | null; status: string; ad: { id: string; title: string; status: string; } };
 
 export default function AdminDashboard() {
   const [token, setToken] = useState('');
+  const [user, setUser] = useState<User | null>(null);
+  const [statusMessage, setStatusMessage] = useState('Loading admin session...');
   const [payments, setPayments] = useState<Payment[]>([]);
   const [selectedId, setSelectedId] = useState('');
   const [action, setAction] = useState('approve');
@@ -16,7 +20,24 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const saved = localStorage.getItem('adflow-token');
-    if (saved) setToken(saved);
+    if (saved) {
+      setToken(saved);
+      fetch('/api/auth/me', { headers: { Authorization: `Bearer ${saved}` } })
+        .then((res) => {
+          if (!res.ok) throw new Error('Unauthorized');
+          return res.json();
+        })
+        .then((data) => {
+          setUser(data);
+          setStatusMessage('Logged in as ' + data.role);
+        })
+        .catch(() => {
+          setUser(null);
+          setStatusMessage('Please login with an admin account.');
+        });
+    } else {
+      setStatusMessage('Please login to view the admin dashboard.');
+    }
   }, []);
 
   useEffect(() => {
@@ -50,6 +71,18 @@ export default function AdminDashboard() {
     } else {
       setMessage(body.error || 'Failed to verify payment');
     }
+  }
+
+  if (!token) {
+    return <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">{statusMessage}</div>;
+  }
+
+  if (!user) {
+    return <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">{statusMessage}</div>;
+  }
+
+  if (user.role !== 'ADMIN') {
+    return <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">Access denied. Admins only.</div>;
   }
 
   return (

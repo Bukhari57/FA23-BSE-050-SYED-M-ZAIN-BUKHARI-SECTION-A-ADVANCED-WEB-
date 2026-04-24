@@ -2,10 +2,14 @@
 
 import { FormEvent, useEffect, useState } from 'react';
 
+type User = { id: string; name: string; email: string; role: string };
+
 type PendingAd = { id: string; title: string; description: string; status: string; package: { name: string } };
 
 export default function ModeratorDashboard() {
   const [token, setToken] = useState('');
+  const [user, setUser] = useState<User | null>(null);
+  const [statusMessage, setStatusMessage] = useState('Loading moderator session...');
   const [ads, setAds] = useState<PendingAd[]>([]);
   const [decision, setDecision] = useState('APPROVED');
   const [feedback, setFeedback] = useState('');
@@ -16,7 +20,24 @@ export default function ModeratorDashboard() {
 
   useEffect(() => {
     const saved = localStorage.getItem('adflow-token');
-    if (saved) setToken(saved);
+    if (saved) {
+      setToken(saved);
+      fetch('/api/auth/me', { headers: { Authorization: `Bearer ${saved}` } })
+        .then((res) => {
+          if (!res.ok) throw new Error('Unauthorized');
+          return res.json();
+        })
+        .then((data) => {
+          setUser(data);
+          setStatusMessage('Logged in as ' + data.role);
+        })
+        .catch(() => {
+          setUser(null);
+          setStatusMessage('Please login with a moderator account.');
+        });
+    } else {
+      setStatusMessage('Please login to view the moderator dashboard.');
+    }
   }, []);
 
   useEffect(() => {
@@ -47,6 +68,18 @@ export default function ModeratorDashboard() {
     } else {
       setMessage(body.error || 'Failed to review ad');
     }
+  }
+
+  if (!token) {
+    return <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">{statusMessage}</div>;
+  }
+
+  if (!user) {
+    return <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">{statusMessage}</div>;
+  }
+
+  if (user.role !== 'MODERATOR') {
+    return <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6">Access denied. Moderators only.</div>;
   }
 
   return (
