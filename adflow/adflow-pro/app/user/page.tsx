@@ -4,6 +4,8 @@ import { FormEvent, useEffect, useState } from 'react';
 
 type Package = { id: string; name: string; price: number; durationDays: number; priority: number; featured: boolean };
 
+type Category = { id: string; name: string };
+
 type Ad = {
   id: string;
   title: string;
@@ -11,18 +13,23 @@ type Ad = {
   mediaUrl: string;
   thumbnailUrl: string | null;
   status: string;
+  city: string | null;
   package: Package;
+  category: Category | null;
   createdAt: string;
 };
 
 export default function UserDashboard() {
   const [token, setToken] = useState('');
   const [packages, setPackages] = useState<Package[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedPackage, setSelectedPackage] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [mediaUrl, setMediaUrl] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
+  const [city, setCity] = useState('');
   const [transactionId, setTransactionId] = useState('');
   const [proofUrl, setProofUrl] = useState('');
   const [submitAdId, setSubmitAdId] = useState('');
@@ -32,16 +39,24 @@ export default function UserDashboard() {
   const [editMediaUrl, setEditMediaUrl] = useState('');
   const [editThumbnailUrl, setEditThumbnailUrl] = useState('');
   const [editPackageId, setEditPackageId] = useState('');
+  const [editCategoryId, setEditCategoryId] = useState('');
+  const [editCity, setEditCity] = useState('');
   const [ads, setAds] = useState<Ad[]>([]);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
     const saved = localStorage.getItem('adflow-token');
     if (saved) setToken(saved);
+
     fetch('/api/packages')
       .then((res) => res.json())
       .then((data) => setPackages(data))
       .catch(() => setPackages([]));
+
+    fetch('/api/categories')
+      .then((res) => res.json())
+      .then((data) => setCategories(data))
+      .catch(() => setCategories([]));
   }, []);
 
   useEffect(() => {
@@ -60,7 +75,15 @@ export default function UserDashboard() {
     const response = await fetch('/api/ads', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ title, description, mediaUrl, thumbnailUrl, packageId: selectedPackage }),
+      body: JSON.stringify({
+        title,
+        description,
+        mediaUrl,
+        thumbnailUrl,
+        packageId: selectedPackage,
+        categoryId: selectedCategory,
+        city: city.trim() || undefined,
+      }),
     });
     const body = await response.json();
     if (response.ok) {
@@ -69,7 +92,9 @@ export default function UserDashboard() {
       setDescription('');
       setMediaUrl('');
       setThumbnailUrl('');
+      setCity('');
       setSelectedPackage('');
+      setSelectedCategory('');
       setAds((prev) => [body, ...prev]);
     } else {
       setMessage(body.error || 'Failed to create ad');
@@ -107,6 +132,8 @@ export default function UserDashboard() {
     setEditMediaUrl(ad.mediaUrl);
     setEditThumbnailUrl(ad.thumbnailUrl || '');
     setEditPackageId(ad.package.id);
+    setEditCategoryId(ad.category?.id || '');
+    setEditCity(ad.city || '');
     setMessage('Draft loaded for editing.');
   }
 
@@ -127,6 +154,8 @@ export default function UserDashboard() {
         mediaUrl: editMediaUrl,
         thumbnailUrl: editThumbnailUrl,
         packageId: editPackageId,
+        categoryId: editCategoryId,
+        city: editCity.trim() || null,
       }),
     });
     const body = await response.json();
@@ -138,6 +167,8 @@ export default function UserDashboard() {
       setEditMediaUrl('');
       setEditThumbnailUrl('');
       setEditPackageId('');
+      setEditCategoryId('');
+      setEditCity('');
       setAds((prev) => prev.map((ad) => (ad.id === body.id ? body : ad)));
     } else {
       setMessage(body.error || 'Failed to update draft');
@@ -170,16 +201,33 @@ export default function UserDashboard() {
             <span>Thumbnail URL</span>
             <input value={thumbnailUrl} onChange={(e) => setThumbnailUrl(e.target.value)} type="url" />
           </label>
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="block space-y-2 text-sm">
+              <span>Package</span>
+              <select value={selectedPackage} onChange={(e) => setSelectedPackage(e.target.value)} required>
+                <option value="">Select package</option>
+                {packages.map((pkg) => (
+                  <option key={pkg.id} value={pkg.id}>
+                    {pkg.name} ({pkg.durationDays}d)
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block space-y-2 text-sm">
+              <span>Category</span>
+              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+                <option value="">Select category</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
           <label className="block space-y-2 text-sm">
-            <span>Package</span>
-            <select value={selectedPackage} onChange={(e) => setSelectedPackage(e.target.value)} required>
-              <option value="">Select package</option>
-              {packages.map((pkg) => (
-                <option key={pkg.id} value={pkg.id}>
-                  {pkg.name} ({pkg.durationDays}d)
-                </option>
-              ))}
-            </select>
+            <span>City</span>
+            <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City or region" />
           </label>
           <button className="w-full rounded bg-cyan-600 px-4 py-3 font-semibold text-slate-950 hover:bg-cyan-500">Create draft</button>
         </form>
@@ -221,16 +269,33 @@ export default function UserDashboard() {
             <span>Thumbnail URL</span>
             <input value={editThumbnailUrl} onChange={(e) => setEditThumbnailUrl(e.target.value)} type="url" />
           </label>
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="block space-y-2 text-sm">
+              <span>Package</span>
+              <select value={editPackageId} onChange={(e) => setEditPackageId(e.target.value)} required>
+                <option value="">Select package</option>
+                {packages.map((pkg) => (
+                  <option key={pkg.id} value={pkg.id}>
+                    {pkg.name} ({pkg.durationDays}d)
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block space-y-2 text-sm">
+              <span>Category</span>
+              <select value={editCategoryId} onChange={(e) => setEditCategoryId(e.target.value)}>
+                <option value="">Select category</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
           <label className="block space-y-2 text-sm">
-            <span>Package</span>
-            <select value={editPackageId} onChange={(e) => setEditPackageId(e.target.value)} required>
-              <option value="">Select package</option>
-              {packages.map((pkg) => (
-                <option key={pkg.id} value={pkg.id}>
-                  {pkg.name} ({pkg.durationDays}d)
-                </option>
-              ))}
-            </select>
+            <span>City</span>
+            <input value={editCity} onChange={(e) => setEditCity(e.target.value)} placeholder="City or region" />
           </label>
           <button className="w-full rounded bg-amber-500 px-4 py-3 font-semibold text-slate-950 hover:bg-amber-400">Update draft</button>
         </form>
@@ -246,9 +311,13 @@ export default function UserDashboard() {
           ) : (
             ads.map((ad) => (
               <div key={ad.id} className="rounded-3xl border border-slate-800 bg-slate-950 p-4">
-                <p className="text-sm text-slate-400">{ad.package.name}</p>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-sm text-slate-400">{ad.package.name}</p>
+                  <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{ad.category?.name || 'General'}</p>
+                </div>
                 <p className="font-semibold text-slate-100">{ad.title}</p>
                 <p className="text-sm text-slate-400">Status: {ad.status}</p>
+                <p className="text-sm text-slate-400">Location: {ad.city || 'Not specified'}</p>
                 <p className="text-xs text-slate-500">Created {new Date(ad.createdAt).toLocaleString()}</p>
                 {ad.status === 'DRAFT' ? (
                   <button

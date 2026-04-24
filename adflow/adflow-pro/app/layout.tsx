@@ -18,6 +18,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
             <nav className="flex flex-wrap gap-3 text-slate-200">
               <a href="/" className="rounded bg-slate-800 px-3 py-2 hover:bg-slate-700">Home</a>
+              <a href="/ads" className="rounded bg-slate-800 px-3 py-2 hover:bg-slate-700">Explore</a>
+              <a href="/packages" className="rounded bg-slate-800 px-3 py-2 hover:bg-slate-700">Packages</a>
+              <a href="/faq" className="rounded bg-slate-800 px-3 py-2 hover:bg-slate-700">FAQ</a>
+              <a href="/contact" className="rounded bg-slate-800 px-3 py-2 hover:bg-slate-700">Contact</a>
               <a href="/login" className="rounded bg-slate-800 px-3 py-2 hover:bg-slate-700">Login</a>
               <a href="/register" className="rounded bg-slate-800 px-3 py-2 hover:bg-slate-700">Register</a>
               <a href="/user" className="rounded bg-slate-800 px-3 py-2 hover:bg-slate-700">User</a>

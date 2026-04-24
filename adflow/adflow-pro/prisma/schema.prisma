@@ -57,8 +57,9 @@ model Ad {
   userId         String
   category       Category?  @relation(fields: [categoryId], references: [id])
   categoryId     String?
-  startDate      DateTime?  
-  endDate        DateTime?  
+  city           String?
+  startDate      DateTime?
+  endDate        DateTime?
   payments       Payment[]
   reviews        Review[]
   createdAt      DateTime   @default(now())

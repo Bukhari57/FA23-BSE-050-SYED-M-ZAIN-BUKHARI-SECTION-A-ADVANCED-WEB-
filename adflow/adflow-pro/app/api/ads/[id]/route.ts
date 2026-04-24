@@ -15,14 +15,16 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   }
 
   const body = await request.json();
-  const { title, description, mediaUrl, thumbnailUrl, packageId } = body;
-  const data: { title?: string; description?: string; mediaUrl?: string; thumbnailUrl?: string | null; packageId?: string } = {};
+  const { title, description, mediaUrl, thumbnailUrl, packageId, categoryId, city } = body;
+  const data: { title?: string; description?: string; mediaUrl?: string; thumbnailUrl?: string | null; packageId?: string; categoryId?: string; city?: string | null } = {};
 
   if (title) data.title = title;
   if (description) data.description = description;
   if (mediaUrl) data.mediaUrl = mediaUrl;
   if (thumbnailUrl !== undefined) data.thumbnailUrl = thumbnailUrl || null;
   if (packageId) data.packageId = packageId;
+  if (categoryId) data.categoryId = categoryId;
+  if (city !== undefined) data.city = city || null;
 
   if (!Object.keys(data).length) {
     return new Response(JSON.stringify({ error: 'No fields to update' }), { status: 400 });
@@ -31,7 +33,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   const updatedAd = await prisma.ad.update({
     where: { id: params.id },
     data,
-    include: { package: true },
+    include: { package: true, category: true },
   });
 
   return new Response(JSON.stringify(updatedAd));

@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     requireAuth(authUser);
     const ads = await prisma.ad.findMany({
       where: { userId: authUser!.id },
-      include: { package: true },
+      include: { package: true, category: true },
       orderBy: { createdAt: 'desc' },
     });
     return new Response(JSON.stringify(ads));
@@ -19,20 +19,54 @@ export async function GET(request: Request) {
 
   if (publicFeed === 'true') {
     const now = new Date();
-    const ads = await prisma.ad.findMany({
-      where: {
-        status: 'LIVE',
-        startDate: { lte: now },
-        endDate: { gt: now },
-      },
-      include: { package: true, user: true },
-      orderBy: [
-        { package: { priority: 'desc' } },
-        { featured: 'desc' },
-        { startDate: 'desc' },
-      ],
-    });
-    return new Response(JSON.stringify(ads));
+    const search = url.searchParams.get('search')?.trim();
+    const category = url.searchParams.get('category')?.trim();
+    const city = url.searchParams.get('city')?.trim();
+    const sort = url.searchParams.get('sort');
+    const page = Math.max(Number(url.searchParams.get('page') || '1'), 1);
+    const limit = Math.min(Math.max(Number(url.searchParams.get('limit') || '12'), 1), 50);
+    const skip = (page - 1) * limit;
+
+    const where: any = {
+      status: 'LIVE',
+      startDate: { lte: now },
+      endDate: { gt: now },
+    };
+
+    if (search) {
+      where.OR = [
+        { title: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    if (category) {
+      where.category = { name: { equals: category, mode: 'insensitive' } };
+    }
+
+    if (city) {
+      where.city = { equals: city, mode: 'insensitive' };
+    }
+
+    const orderBy =
+      sort === 'newest'
+        ? [{ startDate: 'desc' }]
+        : sort === 'featured'
+        ? [{ featured: 'desc' }, { package: { priority: 'desc' } }, { startDate: 'desc' }]
+        : [{ package: { priority: 'desc' } }, { featured: 'desc' }, { startDate: 'desc' }];
+
+    const [total, ads] = await Promise.all([
+      prisma.ad.count({ where }),
+      prisma.ad.findMany({
+        where,
+        include: { package: true, user: true, category: true },
+        orderBy,
+        skip,
+        take: limit,
+      }),
+    ]);
+
+    return new Response(JSON.stringify({ ads, total, page, limit }));
   }
 
   return new Response(JSON.stringify({ error: 'Invalid query param' }), { status: 400 });
@@ -46,7 +80,7 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { title, description, mediaUrl, thumbnailUrl, packageId } = body;
+  const { title, description, mediaUrl, thumbnailUrl, packageId, categoryId, city } = body;
   if (!title || !description || !mediaUrl || !packageId) {
     return new Response(JSON.stringify({ error: 'Missing fields' }), { status: 400 });
   }
@@ -58,10 +92,12 @@ export async function POST(request: Request) {
       mediaUrl,
       thumbnailUrl: thumbnailUrl || null,
       packageId,
+      categoryId: categoryId || undefined,
+      city: city?.trim() || undefined,
       userId: authUser!.id,
       status: 'DRAFT',
     },
-    include: { package: true },
+    include: { package: true, category: true },
   });
 
   return new Response(JSON.stringify(ad), { status: 201 });
