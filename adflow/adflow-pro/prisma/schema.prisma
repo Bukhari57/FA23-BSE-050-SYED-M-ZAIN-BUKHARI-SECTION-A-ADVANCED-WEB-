@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("USER")
+  ads       Ad[]
+  reviews   Review[]
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id          String @id @default(uuid())
+  name        String @unique
+  description String?
+  ads         Ad[]
+}
+
+model Package {
+  id           String @id @default(uuid())
+  name         String @unique
+  price        Int
+  durationDays Int
+  priority     Int
+  featured     Boolean @default(false)
+  ads          Ad[]
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model Ad {
+  id             String     @id @default(uuid())
+  title          String
+  description    String
+  mediaUrl       String
+  thumbnailUrl   String?
+  status         String     @default("DRAFT")
+  featured       Boolean    @default(false)
+  suspiciousMedia Boolean   @default(false)
+  package        Package    @relation(fields: [packageId], references: [id])
+  packageId      String
+  user           User       @relation(fields: [userId], references: [id])
+  userId         String
+  category       Category?  @relation(fields: [categoryId], references: [id])
+  categoryId     String?
+  startDate      DateTime?  
+  endDate        DateTime?  
+  payments       Payment[]
+  reviews        Review[]
+  createdAt      DateTime   @default(now())
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  ad            Ad            @relation(fields: [adId], references: [id])
+  adId          String
+  transactionId String
+  proofUrl      String?
+  status        String   @default("PENDING")
+  createdAt     DateTime @default(now())
+}
+
+model Review {
+  id           String   @id @default(uuid())
+  ad           Ad       @relation(fields: [adId], references: [id])
+  adId         String
+  moderator    User     @relation(fields: [moderatorId], references: [id])
+  moderatorId  String
+  decision     String
+  feedback     String?
+  internalNotes String?
+  createdAt    DateTime @default(now())
+}
