@@ -28,15 +28,29 @@ A modern portfolio-grade Inventory Management System built with React, Tailwind 
 
 <img width="1440" height="900" alt="Screenshot 2026-05-06 at 2 05 08 PM" src="https://github.com/user-attachments/assets/0983f588-ace5-4e24-9e4f-ee503cbc1428" />
 
+
 ## GOODS IN/OUT
 
-<img width="1440" height="900" alt="Screenshot 2026-05-06 at 2 05 24 PM" src="https://github.com/user-attachments/assets/d40c903f-effb-45ef-b6be-42425dcf2f81" />
+<img width="1440" height="900" alt="Screenshot 2026-05-06 at 2 25 20 PM" src="https://github.com/user-attachments/assets/3c9f6c91-5b32-4927-a6c3-b481933087ea" />
 
 ## TRANSFERS
 
-<img width="1440" height="900" alt="Screenshot 2026-05-06 at 2 05 28 PM" src="https://github.com/user-attachments/assets/a46eca9c-02c4-4c9e-936d-d182386da12a" />
+<img width="1440" height="900" alt="Screenshot 2026-05-06 at 2 25 28 PM" src="https://github.com/user-attachments/assets/b737de60-714a-4b56-8ee5-a16cd9afa04c" />
 
 ## PURCHASE REQUESTS
+
+<img width="1440" height="900" alt="Screenshot 2026-05-06 at 2 25 50 PM" src="https://github.com/user-attachments/assets/8de01106-796e-41f0-b476-01535c9d34c1" />
+
+
+## RETURNS
+
+<img width="1440" height="900" alt="Screenshot 2026-05-06 at 2 05 24 PM" src="https://github.com/user-attachments/assets/d40c903f-effb-45ef-b6be-42425dcf2f81" />
+
+## ALERTS
+
+<img width="1440" height="900" alt="Screenshot 2026-05-06 at 2 05 28 PM" src="https://github.com/user-attachments/assets/a46eca9c-02c4-4c9e-936d-d182386da12a" />
+
+## REPORTS
 
 <img width="1440" height="900" alt="Screenshot 2026-05-06 at 2 05 40 PM" src="https://github.com/user-attachments/assets/d6e2eabd-276d-4359-b8ef-30d454d198d9" />
 
