@@ -40,4 +40,4 @@ A modern portfolio-grade Inventory Management System built with React, Tailwind 
 
 - Backend API base path: `/api`
 - Frontend uses JWT stored in localStorage for authentication
-- Dashboard is designed for responsive and premium SaaS experience
+- Dashboard is designed for responsive and premium SaaS experience.
