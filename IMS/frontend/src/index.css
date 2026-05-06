@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --bg: #0e1117;
+  --bg-elevated: #151922;
+  --surface: rgba(22, 27, 36, 0.88);
+  --surface-soft: rgba(255, 248, 238, 0.05);
+  --surface-strong: rgba(255, 248, 238, 0.08);
+  --text: #f6efe5;
+  --text-strong: #fffaf3;
+  --muted: #b8ad9b;
+  --border: rgba(214, 190, 154, 0.16);
+  --accent: #c7a46a;
+  --accent-strong: #e4c48d;
+  --accent-soft: rgba(199, 164, 106, 0.18);
+  --success: #67c29c;
+  --danger: #ef8f88;
+  --shadow: 0 32px 90px rgba(5, 8, 14, 0.42);
+}
+
+html, body, #root {
+  min-height: 100%;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  position: relative;
+  overflow-x: hidden;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(228, 196, 141, 0.16), transparent 28%),
+    radial-gradient(circle at 85% 10%, rgba(103, 194, 156, 0.12), transparent 20%),
+    radial-gradient(circle at bottom right, rgba(199, 164, 106, 0.14), transparent 22%),
+    linear-gradient(180deg, #0f141d 0%, #0b0d12 100%);
+}
+
+body::before,
+body::after {
+  content: '';
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+body::before {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 120px 120px;
+  mask-image: radial-gradient(circle at center, black 35%, transparent 82%);
+  opacity: 0.22;
+}
+
+body::after {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 248, 238, 0.08), transparent 16%),
+    radial-gradient(circle at 80% 75%, rgba(228, 196, 141, 0.12), transparent 14%);
+  filter: blur(10px);
+}
+
+body.light {
+  color-scheme: light;
+  --bg: #f4ede2;
+  --bg-elevated: #ebe2d4;
+  --surface: rgba(255, 252, 247, 0.88);
+  --surface-soft: rgba(124, 94, 53, 0.06);
+  --surface-strong: rgba(124, 94, 53, 0.12);
+  --text: #241f18;
+  --text-strong: #17120c;
+  --muted: #6e6254;
+  --border: rgba(102, 79, 48, 0.16);
+  --accent: #a97b43;
+  --accent-strong: #7e5625;
+  --accent-soft: rgba(169, 123, 67, 0.12);
+  --success: #1f8a63;
+  --danger: #c85d4f;
+  --shadow: 0 28px 80px rgba(100, 73, 37, 0.14);
+  background:
+    radial-gradient(circle at top left, rgba(169, 123, 67, 0.12), transparent 28%),
+    radial-gradient(circle at 85% 10%, rgba(31, 138, 99, 0.08), transparent 18%),
+    radial-gradient(circle at bottom right, rgba(128, 86, 37, 0.08), transparent 20%),
+    linear-gradient(180deg, #f7f1e7 0%, #efe5d7 100%);
+}
+
+body.light::before {
+  opacity: 0.12;
+}
+
+body, input, textarea, button, select {
+  font: inherit;
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+a, button, input, select, textarea {
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+::selection {
+  background: rgba(199, 164, 106, 0.3);
+}
+
+.fade-in {
+  animation: fadeIn 0.55s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.shadow-glass {
+  box-shadow: var(--shadow);
+}
+
+.bg-hero-gradient {
+  background:
+    radial-gradient(circle at top left, rgba(228, 196, 141, 0.18), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(103, 194, 156, 0.12), transparent 22%),
+    linear-gradient(135deg, rgba(19, 23, 31, 0.96), rgba(12, 15, 21, 0.9));
+}
+
+.premium-panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0)),
+    var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.premium-subtle {
+  background: linear-gradient(180deg, var(--surface-soft), rgba(255, 255, 255, 0.015));
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 248, 238, 0.04);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(199, 164, 106, 0.42);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(199, 164, 106, 0.62);
+}

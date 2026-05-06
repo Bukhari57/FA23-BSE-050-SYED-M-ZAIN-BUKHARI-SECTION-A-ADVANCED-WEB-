@@ -1,0 +1,13 @@
+{
+  "name": "ims-project",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev -- --host 0.0.0.0\"",
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev -- --host 0.0.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
