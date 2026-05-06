@@ -1,0 +1,16 @@
+$kind: http-request
+name: http://localhost:3000/students/3
+url: http://localhost:3000/students/3
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Zain Bukhari\",\r
+
+    \  \"email\": \"zain@email.com\",\r
+
+    \  \"department\": \"SE\"\r
+
+    }"
+order: 4447366432656616
