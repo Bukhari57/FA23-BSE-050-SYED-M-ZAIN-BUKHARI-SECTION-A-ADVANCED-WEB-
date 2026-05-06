@@ -1,0 +1,6 @@
+- [x] Verify that the copilot-instructions.md file exists in the .github directory.
+- [x] Scaffold the project files for a Next.js + Tailwind app.
+- [x] Add backend API routes and Prisma database schema.
+- [x] Build RBAC and ad workflow logic.
+- [x] Include frontend pages and automation endpoint.
+- [x] Validate the project compiles successfully.
