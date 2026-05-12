@@ -1,5 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const motionPreference = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    let reduceMotion = motionPreference ? motionPreference.matches : false;
+    if (motionPreference) {
+        const onPreferenceChange = (event) => {
+            reduceMotion = event.matches;
+        };
+        if (motionPreference.addEventListener) {
+            motionPreference.addEventListener('change', onPreferenceChange);
+        } else if (motionPreference.addListener) {
+            motionPreference.addListener(onPreferenceChange);
+        }
+    }
     // dark mode toggle
     const toggle = document.getElementById('darkModeToggle');
     if (toggle) {

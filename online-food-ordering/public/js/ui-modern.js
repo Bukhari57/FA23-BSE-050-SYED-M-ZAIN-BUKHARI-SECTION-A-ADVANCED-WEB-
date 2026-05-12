@@ -82,19 +82,20 @@ document.addEventListener('DOMContentLoaded', ()=>{
   if(checkoutForm){
     const nameInput = checkoutForm.querySelector('[name="name"]');
     const emailInput = checkoutForm.querySelector('[name="email"]');
-    if(!nameInput || !emailInput) return;
-    checkoutForm.addEventListener('submit', e=>{
-      e.preventDefault();
-      const name = nameInput.value.trim();
-      const email = emailInput.value.trim();
-      if(!name || !email){
-        showToast('Please fill required fields', true); return;
-      }
-      // success effect
-      showToast('Order placed — Thank you!');
-      localStorage.removeItem(CART_KEY); renderCart();
-      setTimeout(()=>{ cartPanel.classList.remove('open'); },400);
-    });
+    if(nameInput && emailInput){
+      checkoutForm.addEventListener('submit', e=>{
+        e.preventDefault();
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        if(!name || !email){
+          showToast('Please fill required fields', true); return;
+        }
+        // success effect
+        showToast('Order placed — Thank you!');
+        localStorage.removeItem(CART_KEY); renderCart();
+        setTimeout(()=>{ cartPanel.classList.remove('open'); },400);
+      });
+    }
   }
 
   // toast
