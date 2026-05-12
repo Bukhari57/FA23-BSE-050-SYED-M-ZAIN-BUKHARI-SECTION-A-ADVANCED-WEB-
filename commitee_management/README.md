@@ -11,7 +11,6 @@ A lean Angular + Supabase app for rotating savings committees. It includes auth,
 5. Install and run:
 
 ```bash
-npm install
 npm start
 ```
 
