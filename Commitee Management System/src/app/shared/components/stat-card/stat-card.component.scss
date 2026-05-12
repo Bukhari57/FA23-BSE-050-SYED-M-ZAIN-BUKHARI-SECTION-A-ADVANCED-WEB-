@@ -1,0 +1,49 @@
+.stat-card {
+  border-radius: 18px;
+  padding: 1rem;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--bg-elevated) 90%, #ffffff 10%), color-mix(in srgb, var(--bg-elevated) 82%, transparent 18%));
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(14px);
+  transition: transform var(--motion-base), box-shadow var(--motion-base), border-color var(--motion-base);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+  border-color: color-mix(in srgb, var(--brand-primary) 36%, var(--border-soft));
+}
+
+.stat-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-soft);
+}
+
+.stat-card__title {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.stat-card__value {
+  font-size: 2rem;
+  margin: 0.35rem 0;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+
+.stat-card__trend {
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.is-positive {
+  color: var(--success);
+}
+
+.is-negative {
+  color: var(--danger);
+}

@@ -1,0 +1,57 @@
+<div class="page-grid">
+  <mat-card>
+    <div class="panel-head">
+      <div>
+        <h3 class="section-title">User Management</h3>
+        <p class="section-subtitle">Search, review, and control account access</p>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Search users and logs</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput [value]="search()" (input)="updateSearch($event)" />
+      </mat-form-field>
+    </div>
+
+    <div class="rows">
+      @for (user of filteredUsers(); track user.id) {
+        <div class="row">
+          <div>
+            <strong>{{ user.fullName }}</strong>
+            <small>{{ user.email }} • {{ user.role }}</small>
+          </div>
+
+          <div class="actions">
+            <span class="badge" [class.success]="user.isActive" [class.warning]="!user.isActive">
+              {{ user.isActive ? 'Active' : 'Inactive' }}
+            </span>
+            <button mat-stroked-button color="primary" (click)="toggleUserStatus(user)">
+              {{ user.isActive ? 'Deactivate' : 'Activate' }}
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </mat-card>
+
+  <mat-card>
+    <div class="panel-head">
+      <div>
+        <h3 class="section-title">Audit Logs</h3>
+        <p class="section-subtitle">Chronological system and user actions</p>
+      </div>
+    </div>
+
+    <div class="rows">
+      @for (log of filteredAuditLogs(); track log._id) {
+        <div class="row">
+          <div>
+            <strong>{{ log.action }}</strong>
+            <small>{{ log.resourceType }} • {{ log.actor?.fullName || 'System' }}</small>
+          </div>
+          <span>{{ log.createdAt | date: 'short' }}</span>
+        </div>
+      }
+    </div>
+  </mat-card>
+</div>

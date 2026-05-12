@@ -1,0 +1,167 @@
+<div class="auth-page">
+  <section class="hero-panel fade-in">
+    <a class="brand" routerLink="/">
+      <span class="brand-dot"></span>
+      Committee Plus
+    </a>
+
+    <div class="hero-copy">
+      <p class="eyebrow">Enterprise-grade committee operations</p>
+      <h1>Run collections, payouts, and compliance from a single premium workspace.</h1>
+      <p class="muted">Secure authentication, live dashboards, and production-ready controls for admins and managers.</p>
+    </div>
+
+    <div class="hero-stats">
+      <article>
+        <strong>99.9%</strong>
+        <small>Platform uptime</small>
+      </article>
+      <article>
+        <strong>Realtime</strong>
+        <small>Notifications & events</small>
+      </article>
+      <article>
+        <strong>Role-based</strong>
+        <small>Access control</small>
+      </article>
+    </div>
+  </section>
+
+  <section class="auth-panel fade-in stagger-1">
+    <mat-card>
+      <div class="panel-headline">
+        <h2>Welcome back</h2>
+        <p>Sign in or create an account to continue.</p>
+      </div>
+
+      <mat-tab-group>
+        <mat-tab label="Login">
+          <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" class="form">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" autocomplete="username" />
+              <mat-icon matSuffix>mail</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input
+                matInput
+                formControlName="password"
+                [type]="showLoginPassword() ? 'text' : 'password'"
+                autocomplete="current-password"
+              />
+              <button
+                mat-icon-button
+                type="button"
+                matSuffix
+                (click)="showLoginPassword.set(!showLoginPassword())"
+                [attr.aria-label]="showLoginPassword() ? 'Hide password' : 'Show password'"
+              >
+                <mat-icon>{{ showLoginPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" [disabled]="loading()">{{ loading() ? 'Signing In...' : 'Sign In' }}</button>
+          </form>
+        </mat-tab>
+
+        <mat-tab label="Register">
+          <form [formGroup]="registerForm" (ngSubmit)="submitRegister()" class="form">
+            <mat-form-field appearance="outline">
+              <mat-label>Full Name</mat-label>
+              <input matInput formControlName="fullName" autocomplete="name" />
+              @if (registerForm.controls.fullName.touched && registerForm.controls.fullName.hasError('required')) {
+                <mat-error>Full name is required.</mat-error>
+              }
+              @if (registerForm.controls.fullName.touched && registerForm.controls.fullName.hasError('minlength')) {
+                <mat-error>Full name must be at least 2 characters.</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" autocomplete="email" />
+              @if (registerForm.controls.email.touched && registerForm.controls.email.hasError('required')) {
+                <mat-error>Email is required.</mat-error>
+              }
+              @if (registerForm.controls.email.touched && registerForm.controls.email.hasError('email')) {
+                <mat-error>Enter a valid email address.</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput formControlName="password" [type]="showRegisterPassword() ? 'text' : 'password'" autocomplete="new-password" />
+              <button
+                mat-icon-button
+                type="button"
+                matSuffix
+                (click)="showRegisterPassword.set(!showRegisterPassword())"
+                [attr.aria-label]="showRegisterPassword() ? 'Hide password' : 'Show password'"
+              >
+                <mat-icon>{{ showRegisterPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              <mat-hint>At least 8 chars with uppercase, lowercase, and number.</mat-hint>
+              @if (registerForm.controls.password.touched && registerForm.controls.password.hasError('required')) {
+                <mat-error>Password is required.</mat-error>
+              }
+              @if (registerForm.controls.password.touched && registerForm.controls.password.hasError('pattern')) {
+                <mat-error>Password does not meet the required format.</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Confirm Password</mat-label>
+              <input
+                matInput
+                formControlName="confirmPassword"
+                [type]="showRegisterConfirmPassword() ? 'text' : 'password'"
+                autocomplete="new-password"
+              />
+              <button
+                mat-icon-button
+                type="button"
+                matSuffix
+                (click)="showRegisterConfirmPassword.set(!showRegisterConfirmPassword())"
+                [attr.aria-label]="showRegisterConfirmPassword() ? 'Hide password' : 'Show password'"
+              >
+                <mat-icon>{{ showRegisterConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.hasError('required')) {
+                <mat-error>Confirm password is required.</mat-error>
+              }
+              @if (hasRegisterMismatchError()) {
+                <mat-error>Passwords do not match.</mat-error>
+              }
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" [disabled]="loading()">{{ loading() ? 'Creating...' : 'Create Account' }}</button>
+          </form>
+        </mat-tab>
+
+        <mat-tab label="Forgot Password">
+          <form [formGroup]="forgotForm" (ngSubmit)="submitForgotPassword()" class="form">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" autocomplete="email" />
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" [disabled]="loading()">Send Reset Link</button>
+          </form>
+        </mat-tab>
+
+        <mat-tab label="Verify Email">
+          <form [formGroup]="verifyForm" (ngSubmit)="submitVerifyEmail()" class="form">
+            <mat-form-field appearance="outline">
+              <mat-label>Verification Token</mat-label>
+              <input matInput formControlName="token" autocomplete="one-time-code" />
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" [disabled]="loading()">Verify Email</button>
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </section>
+</div>

@@ -1,0 +1,77 @@
+@if (loading()) {
+  <div class="grid stats-grid">
+    <app-skeleton-card [height]="124"></app-skeleton-card>
+    <app-skeleton-card [height]="124"></app-skeleton-card>
+    <app-skeleton-card [height]="124"></app-skeleton-card>
+    <app-skeleton-card [height]="124"></app-skeleton-card>
+  </div>
+} @else {
+  <div class="grid stats-grid fade-in">
+    <app-stat-card title="Total Committees" icon="groups" [value]="stats().totalCommittees" [trend]="14"></app-stat-card>
+    <app-stat-card title="Active Members" icon="badge" [value]="stats().activeMembers" [trend]="6"></app-stat-card>
+    <app-stat-card title="Monthly Collections" icon="payments" [value]="stats().monthlyCollections" [trend]="9"></app-stat-card>
+    <app-stat-card title="Upcoming Payouts" icon="calendar_month" [value]="stats().upcomingPayouts" [trend]="-2"></app-stat-card>
+  </div>
+
+  <div class="grid details-grid fade-in stagger-1">
+    <mat-card class="chart-card">
+      <div class="panel-head">
+        <div>
+          <h3 class="section-title">Collections Trend</h3>
+          <p class="section-subtitle">Monthly inflow performance at a glance</p>
+        </div>
+        <span class="badge info">Realtime</span>
+      </div>
+      <div class="canvas-wrap">
+        <canvas #chartCanvas></canvas>
+      </div>
+    </mat-card>
+
+    <mat-card>
+      <div class="panel-head">
+        <div>
+          <h3 class="section-title">Notifications</h3>
+          <p class="section-subtitle">Latest operational signals</p>
+        </div>
+      </div>
+
+      @if (notifications().length) {
+        <div class="stack">
+          @for (item of notifications(); track item._id) {
+            <div class="list-item">
+              <p>{{ item.title }}</p>
+              <small>{{ item.body }}</small>
+            </div>
+          }
+        </div>
+      } @else {
+        <app-empty-state title="No notifications" subtitle="You are all caught up."></app-empty-state>
+      }
+    </mat-card>
+
+    <mat-card class="full">
+      <div class="panel-head">
+        <div>
+          <h3 class="section-title">Recent Transactions</h3>
+          <p class="section-subtitle">Most recent cashflow activity</p>
+        </div>
+      </div>
+
+      @if (recentTransactions().length) {
+        <div class="table">
+          @for (item of recentTransactions(); track item._id) {
+            <div class="table-row">
+              <div>
+                <strong>{{ item.description || item.type }}</strong>
+                <small>{{ item.processedAt | date: 'medium' }}</small>
+              </div>
+              <span class="amount">{{ item.amount | currency: 'PKR':'symbol-narrow' }}</span>
+            </div>
+          }
+        </div>
+      } @else {
+        <app-empty-state title="No transactions" subtitle="Transactions will appear here once payments are posted."></app-empty-state>
+      }
+    </mat-card>
+  </div>
+}

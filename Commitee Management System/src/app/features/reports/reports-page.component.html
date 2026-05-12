@@ -1,0 +1,68 @@
+<div class="page-grid fade-in">
+  <mat-card>
+    <div class="panel-head">
+      <div>
+        <h3 class="section-title">Generate Report</h3>
+        <p class="section-subtitle">Create downloadable monthly, committee, or financial summaries</p>
+      </div>
+    </div>
+
+    <form [formGroup]="reportForm" (ngSubmit)="generate()" class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Report Type</mat-label>
+        <mat-select formControlName="type">
+          <mat-option value="monthly">Monthly</mat-option>
+          <mat-option value="committee">Committee</mat-option>
+          <mat-option value="financial">Financial</mat-option>
+          <mat-option value="custom">Custom</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Format</mat-label>
+        <mat-select formControlName="format">
+          <mat-option value="pdf">PDF</mat-option>
+          <mat-option value="xlsx">Excel</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Start Date</mat-label>
+        <input matInput type="date" formControlName="startDate" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>End Date</mat-label>
+        <input matInput type="date" formControlName="endDate" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Committee ID (optional)</mat-label>
+        <input matInput formControlName="committeeId" />
+      </mat-form-field>
+
+      <button class="full" mat-flat-button color="primary">Generate & Download</button>
+    </form>
+  </mat-card>
+
+  <mat-card>
+    <div class="panel-head">
+      <div>
+        <h3 class="section-title">Recent Reports</h3>
+        <p class="section-subtitle">Latest generated artifacts and summary metrics</p>
+      </div>
+    </div>
+
+    <div class="rows">
+      @for (report of reports(); track report._id) {
+        <div class="row">
+          <div>
+            <strong>{{ report.type | titlecase }} ({{ report.format.toUpperCase() }})</strong>
+            <small>{{ report.createdAt | date: 'medium' }}</small>
+          </div>
+          <span>Collections: {{ report.summary.collections }}</span>
+        </div>
+      }
+    </div>
+  </mat-card>
+</div>
