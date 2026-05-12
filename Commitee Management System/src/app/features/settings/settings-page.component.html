@@ -1,0 +1,86 @@
+<div class="page-grid">
+  <mat-card>
+    <div class="panel-head">
+      <div>
+        <h3 class="section-title">Profile Settings</h3>
+        <p class="section-subtitle">Keep your personal and contact details updated</p>
+      </div>
+    </div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Full Name</mat-label>
+        <input matInput formControlName="fullName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Avatar URL</mat-label>
+        <input matInput formControlName="avatarUrl" />
+      </mat-form-field>
+
+      <button class="full" mat-flat-button color="primary">Save Profile</button>
+    </form>
+  </mat-card>
+
+  <mat-card>
+    <div class="panel-head">
+      <div>
+        <h3 class="section-title">Notification Preferences</h3>
+        <p class="section-subtitle">Control what gets sent to you and when</p>
+      </div>
+    </div>
+
+    <form [formGroup]="notificationForm" (ngSubmit)="updateNotifications()" class="stack">
+      <mat-checkbox formControlName="email">Email Notifications</mat-checkbox>
+      <mat-checkbox formControlName="push">Push Notifications</mat-checkbox>
+      <mat-checkbox formControlName="dueReminders">Due Date Reminders</mat-checkbox>
+      <button mat-flat-button color="primary">Save Preferences</button>
+    </form>
+  </mat-card>
+
+  <mat-card>
+    <div class="panel-head">
+      <div>
+        <h3 class="section-title">Security</h3>
+        <p class="section-subtitle">Update password with strong security rules</p>
+      </div>
+    </div>
+
+    <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Current Password</mat-label>
+        <input matInput [type]="showCurrentPassword() ? 'text' : 'password'" formControlName="currentPassword" />
+        <button
+          mat-icon-button
+          type="button"
+          matSuffix
+          (click)="showCurrentPassword.set(!showCurrentPassword())"
+          [attr.aria-label]="showCurrentPassword() ? 'Hide password' : 'Show password'"
+        >
+          <mat-icon>{{ showCurrentPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>New Password</mat-label>
+        <input matInput [type]="showNewPassword() ? 'text' : 'password'" formControlName="newPassword" />
+        <button
+          mat-icon-button
+          type="button"
+          matSuffix
+          (click)="showNewPassword.set(!showNewPassword())"
+          [attr.aria-label]="showNewPassword() ? 'Hide password' : 'Show password'"
+        >
+          <mat-icon>{{ showNewPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button class="full" mat-flat-button color="primary">Change Password</button>
+    </form>
+  </mat-card>
+</div>

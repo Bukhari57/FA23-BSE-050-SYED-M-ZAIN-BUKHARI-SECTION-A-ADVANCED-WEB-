@@ -1,0 +1,27 @@
+<mat-card class="fade-in">
+  <div class="panel-head">
+    <div>
+      <h3 class="section-title">Notifications</h3>
+      <p class="section-subtitle">System alerts, reminders, and payout updates</p>
+    </div>
+  </div>
+
+  @if (!notifications().length) {
+    <app-empty-state title="No notifications" subtitle="System alerts and reminders will appear here."></app-empty-state>
+  } @else {
+    <div class="rows">
+      @for (notification of notifications(); track notification._id) {
+        <div class="row">
+          <div>
+            <strong>{{ notification.title }}</strong>
+            <p>{{ notification.body }}</p>
+            <small>{{ notification.createdAt | date: 'medium' }}</small>
+          </div>
+          <button mat-stroked-button color="primary" [disabled]="!!notification.readAt" (click)="markRead(notification._id)">
+            {{ notification.readAt ? 'Read' : 'Mark Read' }}
+          </button>
+        </div>
+      }
+    </div>
+  }
+</mat-card>

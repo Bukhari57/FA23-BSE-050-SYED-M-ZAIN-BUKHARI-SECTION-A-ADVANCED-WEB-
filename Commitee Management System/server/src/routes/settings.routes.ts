@@ -1,0 +1,25 @@
+import { Router } from 'express';
+import {
+  changePassword,
+  updateNotificationPreferences,
+  updateProfile,
+} from '../controllers/settings.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { validateRequest } from '../middleware/validate.middleware.js';
+import {
+  changePasswordValidator,
+  updateNotificationPreferencesValidator,
+  updateProfileValidator,
+} from '../validators/settings.validator.js';
+
+export const settingsRouter = Router();
+
+settingsRouter.use(authenticate);
+settingsRouter.patch('/profile', updateProfileValidator, validateRequest, updateProfile);
+settingsRouter.patch(
+  '/notifications',
+  updateNotificationPreferencesValidator,
+  validateRequest,
+  updateNotificationPreferences,
+);
+settingsRouter.patch('/change-password', changePasswordValidator, validateRequest, changePassword);

@@ -1,0 +1,17 @@
+{
+  "name": "Committee Manager Plus",
+  "short_name": "Committee+",
+  "description": "Modern committee management dashboard with collections and payout tracking.",
+  "theme_color": "#0ea5e9",
+  "background_color": "#020617",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

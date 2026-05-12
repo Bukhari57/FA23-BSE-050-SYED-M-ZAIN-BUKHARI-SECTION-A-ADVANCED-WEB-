@@ -1,0 +1,24 @@
+.empty-state {
+  border: 1px dashed var(--border-strong);
+  border-radius: 18px;
+  padding: 1.9rem 1rem;
+  text-align: center;
+  color: var(--text-soft);
+  background: color-mix(in srgb, var(--bg-elevated) 80%, transparent 20%);
+}
+
+.empty-state mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  color: var(--brand-primary);
+}
+
+.empty-state h3 {
+  margin: 0.6rem 0 0.3rem;
+  color: var(--text-strong);
+}
+
+.empty-state p {
+  margin: 0;
+}

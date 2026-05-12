@@ -1,0 +1,78 @@
+<div class="app-shell" [class.sidebar-collapsed]="sidebarCollapsed()" [class.mobile-menu-open]="mobileMenuOpen()">
+  <button class="mobile-overlay" type="button" (click)="closeMobileMenu()" aria-label="Close menu"></button>
+
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <a class="brand" routerLink="/app/dashboard" (click)="closeMobileMenu()">
+        <span class="brand__dot"></span>
+        <span class="brand__label">Committee Plus</span>
+      </a>
+      <button mat-icon-button class="collapse-btn" (click)="toggleSidebar()" aria-label="Toggle sidebar">
+        <mat-icon>{{ sidebarCollapsed() ? 'right_panel_open' : 'left_panel_close' }}</mat-icon>
+      </button>
+    </div>
+
+    <nav class="menu" aria-label="Primary navigation">
+      @for (item of navItems(); track item.path) {
+        <a
+          class="menu-item"
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          (click)="closeMobileMenu()"
+          [attr.aria-label]="item.label"
+        >
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span class="menu-item__label">{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="account-card">
+        <div class="avatar">{{ authStore.user()?.fullName?.[0] ?? 'U' }}</div>
+        <div class="account-meta">
+          <strong>{{ authStore.user()?.fullName ?? 'User' }}</strong>
+          <small>{{ authStore.user()?.role ?? 'manager' }}</small>
+        </div>
+      </div>
+      <button class="logout" mat-stroked-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Sign Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button mat-icon-button class="mobile-menu" (click)="toggleMobileMenu()" aria-label="Open menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <div>
+          <h1>Committee Management</h1>
+          <p>Premium operations control for committees, members, and payouts.</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <mat-form-field appearance="outline" class="global-search" subscriptSizing="dynamic">
+          <mat-label>Quick search</mat-label>
+          <mat-icon matPrefix>search</mat-icon>
+          <input matInput placeholder="Search modules, IDs, members" />
+        </mat-form-field>
+
+        <button mat-icon-button (click)="themeService.toggleTheme()" aria-label="Toggle theme">
+          <mat-icon>{{ themeService.theme() === 'light' ? 'dark_mode' : 'light_mode' }}</mat-icon>
+        </button>
+
+        <button mat-icon-button matBadge="3" matBadgeColor="warn" aria-label="Alerts">
+          <mat-icon>notifications</mat-icon>
+        </button>
+      </div>
+    </header>
+
+    <section class="page-content fade-in">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>

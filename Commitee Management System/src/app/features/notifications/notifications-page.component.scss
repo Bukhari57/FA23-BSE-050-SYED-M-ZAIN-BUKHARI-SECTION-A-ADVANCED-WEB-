@@ -1,0 +1,31 @@
+.rows {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.row {
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 0.78rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+  background: color-mix(in srgb, var(--bg-elevated) 88%, transparent 12%);
+}
+
+.row p {
+  margin: 0.25rem 0;
+  color: var(--text-muted);
+}
+
+.row small {
+  color: var(--text-soft);
+}
+
+@media (max-width: 760px) {
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

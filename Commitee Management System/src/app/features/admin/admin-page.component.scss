@@ -1,0 +1,47 @@
+.page-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+h3 {
+  margin: 0;
+}
+
+.rows {
+  display: grid;
+  gap: 0.62rem;
+}
+
+.row {
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 0.72rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.72rem;
+  background: color-mix(in srgb, var(--bg-elevated) 88%, transparent 12%);
+}
+
+.row small {
+  display: block;
+  color: var(--text-soft);
+}
+
+.actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 760px) {
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
