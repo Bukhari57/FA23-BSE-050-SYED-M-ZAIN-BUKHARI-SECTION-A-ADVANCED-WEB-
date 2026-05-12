@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     // dark mode toggle
     const toggle = document.getElementById('darkModeToggle');
     if (toggle) {
@@ -45,9 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 cart.push({ id, name, price, quantity: 1, image });
             }
             saveCart(cart);
-            // simple animation
-            btn.classList.add('animate__animated', 'animate__bounce');
-            setTimeout(() => btn.classList.remove('animate__animated', 'animate__bounce'), 800);
+            if (!reduceMotion) {
+                btn.classList.add('animate__animated', 'animate__pulse');
+                setTimeout(() => btn.classList.remove('animate__animated', 'animate__pulse'), 500);
+            }
         });
     });
 
@@ -108,14 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // button click bounce globally
-    document.querySelectorAll('button').forEach(btn => {
-        btn.addEventListener('click', () => {
-            btn.classList.add('animate__animated', 'animate__pulse');
-            setTimeout(() => btn.classList.remove('animate__animated', 'animate__pulse'), 600);
-        });
-    });
-
     // highlight active nav link
     const path = window.location.pathname;
     document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
@@ -125,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // GSAP entrance animations if available
-    if (window.gsap) {
+    if (window.gsap && !reduceMotion) {
         try {
             // hero animation
             gsap.from('.hero-title', { y: 40, opacity: 0, duration: 0.9, ease: 'power3.out' });
@@ -134,19 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // stagger cards
             gsap.from('.menu-card', { y: 30, opacity: 0, duration: 0.8, stagger: 0.12, ease: 'power2.out' });
-
-            // small hover tilt for cards
-            document.querySelectorAll('.menu-card .card').forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = (e.clientX - rect.left) / rect.width - 0.5;
-                    const y = (e.clientY - rect.top) / rect.height - 0.5;
-                    gsap.to(card, { rotationY: x * 6, rotationX: -y * 6, scale: 1.02, transformPerspective: 1000, duration: 0.3 });
-                });
-                card.addEventListener('mouseleave', () => {
-                    gsap.to(card, { rotationY: 0, rotationX: 0, scale: 1, duration: 0.6, ease: 'power3.out' });
-                });
-            });
         } catch (err) {
             console.warn('GSAP failed', err);
         }
