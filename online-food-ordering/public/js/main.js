@@ -5,11 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const onPreferenceChange = (event) => {
             reduceMotion = event.matches;
         };
-        if (motionPreference.addEventListener) {
-            motionPreference.addEventListener('change', onPreferenceChange);
-        } else if (motionPreference.addListener) {
-            motionPreference.addListener(onPreferenceChange);
-        }
+        motionPreference.addEventListener('change', onPreferenceChange);
     }
     // dark mode toggle
     const toggle = document.getElementById('darkModeToggle');
