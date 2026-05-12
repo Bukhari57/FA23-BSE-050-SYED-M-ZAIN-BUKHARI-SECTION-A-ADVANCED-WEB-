@@ -63,7 +63,12 @@ export class AuthService {
     const fallbackName = user.user_metadata?.['full_name'] || user.email?.split('@')[0] || 'Member';
     const { data: created, error: createError } = await this.supabase
       .from('users')
-      .insert({ id: user.id, full_name: fallbackName })
+      .insert({
+        id: user.id,
+        auth_id: user.id,
+        email: user.email ?? `${user.id}@example.com`,
+        full_name: fallbackName,
+      })
       .select('*')
       .single();
 

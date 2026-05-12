@@ -139,13 +139,8 @@ ALTER TABLE reputation_logs ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can read their own data" ON users
   FOR SELECT USING (auth.uid() = auth_id);
 
-CREATE POLICY "Admins can read all users" ON users
-  FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM users AS u2 
-      WHERE u2.auth_id = auth.uid() AND u2.is_admin = TRUE
-    )
-  );
+CREATE POLICY "Users can create their own profile" ON users
+  FOR INSERT WITH CHECK (auth.uid() = auth_id);
 
 CREATE POLICY "Users can update their own profile" ON users
   FOR UPDATE USING (auth.uid() = auth_id);
@@ -172,12 +167,10 @@ CREATE POLICY "Users can update their membership" ON committee_members
 
 -- Payments table policies
 CREATE POLICY "Users can read their payments" ON payments
-  FOR SELECT USING (
-    user_id = (SELECT id FROM users WHERE auth_id = auth.uid())
-    OR EXISTS (
-      SELECT 1 FROM users WHERE auth_id = auth.uid() AND is_admin = TRUE
-    )
-  );
+  FOR SELECT USING (user_id = (SELECT id FROM users WHERE auth_id = auth.uid()));
+
+CREATE POLICY "Users can create their payments" ON payments
+  FOR INSERT WITH CHECK (user_id = (SELECT id FROM users WHERE auth_id = auth.uid()));
 
 CREATE POLICY "Users can update their payments" ON payments
   FOR UPDATE USING (user_id = (SELECT id FROM users WHERE auth_id = auth.uid()));
@@ -186,12 +179,18 @@ CREATE POLICY "Users can update their payments" ON payments
 CREATE POLICY "Users can read their notifications" ON notifications
   FOR SELECT USING (user_id = (SELECT id FROM users WHERE auth_id = auth.uid()));
 
+CREATE POLICY "Users can create their notifications" ON notifications
+  FOR INSERT WITH CHECK (user_id = (SELECT id FROM users WHERE auth_id = auth.uid()));
+
 CREATE POLICY "Users can update their notifications" ON notifications
   FOR UPDATE USING (user_id = (SELECT id FROM users WHERE auth_id = auth.uid()));
 
 -- Reputation logs table policies
 CREATE POLICY "Users can read reputation logs" ON reputation_logs
   FOR SELECT USING (TRUE);
+
+CREATE POLICY "Users can create reputation logs" ON reputation_logs
+  FOR INSERT WITH CHECK (user_id = (SELECT id FROM users WHERE auth_id = auth.uid()));
 
 -- ============================================================
 -- STEP 6: Create indexes
