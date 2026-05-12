@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   function saveCart(items){ localStorage.setItem(CART_KEY, JSON.stringify(items)); renderCart(); }
 
   function renderCart(){
+    if(!cartItemsEl || !cartCount) return;
     const items = loadCart();
     cartItemsEl.innerHTML = '';
     let total = 0;
@@ -45,7 +46,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
       cartItemsEl.appendChild(el);
     });
     cartCount.textContent = items.reduce((s,i)=>s+i.qty,0);
-    document.querySelector('#cartTotal').textContent = '$'+total.toFixed(2);
+    const cartTotalEl = document.querySelector('#cartTotal');
+    if(cartTotalEl) cartTotalEl.textContent = '$'+total.toFixed(2);
   }
 
   // cart button toggle
@@ -78,18 +80,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
   // Checkout form basic validation
   const checkoutForm = document.querySelector('#checkoutForm');
   if(checkoutForm){
-    checkoutForm.addEventListener('submit', e=>{
-      e.preventDefault();
-      const name = checkoutForm.querySelector('[name="name"]').value.trim();
-      const email = checkoutForm.querySelector('[name="email"]').value.trim();
-      if(!name || !email){
-        showToast('Please fill required fields', true); return;
-      }
-      // success effect
-      showToast('Order placed — Thank you!');
-      localStorage.removeItem(CART_KEY); renderCart();
-      setTimeout(()=>{ cartPanel.classList.remove('open'); },400);
-    });
+    const nameInput = checkoutForm.querySelector('[name="name"]');
+    const emailInput = checkoutForm.querySelector('[name="email"]');
+    if(nameInput && emailInput){
+      checkoutForm.addEventListener('submit', e=>{
+        e.preventDefault();
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        if(!name || !email){
+          showToast('Please fill required fields', true); return;
+        }
+        // success effect
+        showToast('Order placed — Thank you!');
+        localStorage.removeItem(CART_KEY); renderCart();
+        setTimeout(()=>{ cartPanel.classList.remove('open'); },400);
+      });
+    }
   }
 
   // toast
