@@ -2,6 +2,13 @@
 
 A lean Angular + Supabase app for rotating savings committees. It includes auth, profiles, committee creation, join requests, member management, payment tracking, notifications, reputation scoring, and an admin overview.
 
+## Screenshots
+
+
+<img width="1440" height="900" alt="Screenshot 2026-05-12 at 2 23 56 PM" src="https://github.com/user-attachments/assets/771b0548-e07a-4682-9198-9c717f0fec51" />
+
+
+
 ## Setup
 
 1. Create a Supabase project.
