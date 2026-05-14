@@ -8,6 +8,9 @@ A lean Angular + Supabase app for rotating savings committees. It includes auth,
 <img width="1440" height="900" alt="Screenshot 2026-05-12 at 2 23 56 PM" src="https://github.com/user-attachments/assets/771b0548-e07a-4682-9198-9c717f0fec51" />
 
 
+<img width="1440" height="900" alt="Screenshot 2026-05-13 at 7 43 21 PM" src="https://github.com/user-attachments/assets/f5195589-9521-43bc-8511-50e0a53dddd9" />
+
+
 <img width="1440" height="900" alt="Screenshot 2026-05-13 at 7 43 37 PM" src="https://github.com/user-attachments/assets/1858b2c0-6914-49e3-b4c8-ac113a687c29" />
 
 
@@ -17,7 +20,6 @@ A lean Angular + Supabase app for rotating savings committees. It includes auth,
 <img width="1440" height="900" alt="Screenshot 2026-05-13 at 7 44 54 PM" src="https://github.com/user-attachments/assets/28b9ede7-95df-4dbc-a306-a75876da5188" />
 
 
-<img width="1440" height="900" alt="Screenshot 2026-05-13 at 7 43 21 PM" src="https://github.com/user-attachments/assets/f5195589-9521-43bc-8511-50e0a53dddd9" />
 
 ## Setup
 
