@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const pool = require('../config/db');
+const supabase = require('../config/supabase');
 
 function getJwtSecret() {
   const secret = process.env.JWT_SECRET;
@@ -11,34 +11,26 @@ function getJwtSecret() {
 }
 
 async function findUserByEmail(email) {
-  let rows = [];
-  try {
-    [rows] = await pool.query('SELECT id, name, email, password, role FROM users WHERE email = ?', [email]);
-  } catch (error) {
-    if (error.code === 'ER_BAD_FIELD_ERROR') {
-      [rows] = await pool.query('SELECT id, name, email, password FROM users WHERE email = ?', [email]);
-    } else {
-      throw error;
-    }
-  }
+  const { data, error } = await supabase
+    .from('users')
+    .select('id, name, email, password, role')
+    .eq('email', email)
+    .limit(1)
+    .maybeSingle();
 
-  const user = rows[0] || null;
-  if (user && !user.role) {
-    user.role = 'user';
-  }
+  if (error) throw error;
+  const user = data || null;
+  if (user && !user.role) user.role = 'user';
   return user;
 }
 
 async function createUser(name, email, passwordHash, role = 'user') {
-  try {
-    await pool.query('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, passwordHash, role]);
-  } catch (error) {
-    if (error.code === 'ER_BAD_FIELD_ERROR') {
-      await pool.query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, passwordHash]);
-    } else {
-      throw error;
-    }
-  }
+  const insert = { name, email, password: passwordHash };
+  if (role) insert.role = role;
+
+  const { data, error } = await supabase.from('users').insert([insert]).select('id').maybeSingle();
+  if (error) throw error;
+  return data;
 }
 
 function generateToken(user) {

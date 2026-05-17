@@ -2,6 +2,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Event as RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +35,14 @@ import { AuthService } from './services/auth.service';
 export class AppComponent {
   protected readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  navigating = false;
+
+  constructor() {
+    this.router.events.subscribe((e: RouterEvent) => {
+      if (e instanceof NavigationStart) this.navigating = true;
+      if (e instanceof NavigationEnd || e instanceof NavigationCancel || e instanceof NavigationError) this.navigating = false;
+    });
+  }
 
   async logout() {
     await this.auth.logout();

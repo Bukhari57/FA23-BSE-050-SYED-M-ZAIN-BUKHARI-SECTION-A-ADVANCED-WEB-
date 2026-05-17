@@ -34,6 +34,9 @@ export class AuthService {
   }
 
   async currentUser() {
+    const cached = this.userSubject.getValue();
+    if (cached) return cached;
+
     const { data } = await this.supabase.auth.getUser();
     this.userSubject.next(data.user);
     return data.user;
@@ -92,7 +95,10 @@ export class AuthService {
     if (error) {
       throw error;
     }
-    await this.ensureProfile();
+
+    // Don't block navigation on profile loading — load in background to improve perceived login speed.
+    void this.ensureProfile().catch(() => undefined);
+
     return data;
   }
 

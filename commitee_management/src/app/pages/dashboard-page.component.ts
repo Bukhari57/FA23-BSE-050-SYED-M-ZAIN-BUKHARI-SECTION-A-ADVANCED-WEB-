@@ -1,4 +1,4 @@
-import { CurrencyPipe, DatePipe, NgFor, NgIf, PercentPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, NgFor, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RealtimeChannel } from '@supabase/supabase-js';
@@ -8,7 +8,7 @@ import { CommitteeService } from '../services/committee.service';
 
 @Component({
   standalone: true,
-  imports: [CurrencyPipe, DatePipe, NgFor, NgIf, PercentPipe, RouterLink],
+  imports: [CurrencyPipe, DatePipe, NgFor, NgIf, RouterLink],
   template: `
     <section class="page">
       <div class="section-head">

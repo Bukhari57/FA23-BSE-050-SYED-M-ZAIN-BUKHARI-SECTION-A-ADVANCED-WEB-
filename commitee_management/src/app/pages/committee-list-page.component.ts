@@ -110,6 +110,8 @@ export class CommitteeListPageComponent implements OnInit {
       await this.committeesApi.requestJoin(this.selected.id, this.joinForm.getRawValue());
       this.message = 'Request sent to the committee creator.';
       this.joinForm.reset({ payment_method: 'Bank transfer' });
+      this.selected = null;
+      this.committees = await this.committeesApi.listOpenCommittees();
     } catch (err) {
       this.error = err instanceof Error ? err.message : 'Could not send request.';
     } finally {

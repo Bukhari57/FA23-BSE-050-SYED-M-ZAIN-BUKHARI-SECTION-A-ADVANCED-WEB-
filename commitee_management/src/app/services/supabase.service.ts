@@ -8,7 +8,8 @@ export class SupabaseService {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
-      detectSessionInUrl: true
+      // avoid detecting session in URL on each load to reduce NavigatorLock contention
+      detectSessionInUrl: false
     }
   });
 }
