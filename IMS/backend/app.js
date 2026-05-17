@@ -6,6 +6,7 @@ const categoryRoutes = require('./routes/categories');
 const warehouseRoutes = require('./routes/warehouses');
 const summaryRoutes = require('./routes/summary');
 const advancedRoutes = require('./routes/advanced');
+const mockRoutes = require('./routes/mock');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -19,6 +20,11 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/warehouses', warehouseRoutes);
 app.use('/api/summary', summaryRoutes);
 app.use('/api', advancedRoutes);
+
+// If MOCK_MODE is enabled, mount mock routes before real routes so they respond rapidly
+if (process.env.MOCK_MODE === 'true') {
+	app.use('/api', mockRoutes);
+}
 
 app.use(errorHandler);
 

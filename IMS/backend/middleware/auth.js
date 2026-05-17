@@ -1,6 +1,19 @@
 const jwt = require('jsonwebtoken');
 
+const ALLOW_INSECURE_DEV = process.env.ALLOW_INSECURE_DEV === 'true';
+
 function authenticate(req, res, next) {
+  // Development bypass: when enabled, allow requests without Bearer token
+  // and inject a dev `req.user`. DO NOT enable this in production.
+  if (ALLOW_INSECURE_DEV) {
+    if (!req.headers.authorization) {
+      console.warn('ALLOW_INSECURE_DEV is enabled — granting dev user for request');
+      req.user = { id: 1, name: 'dev', role: 'admin' };
+      return next();
+    }
+    // if an Authorization header is present, fallthrough to normal verification
+  }
+
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ success: false, message: 'Authorization token missing' });
