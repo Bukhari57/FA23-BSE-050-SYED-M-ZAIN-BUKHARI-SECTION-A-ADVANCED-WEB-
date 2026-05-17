@@ -8,10 +8,11 @@
     "frontend": "cd frontend && npm run dev -- --host 0.0.0.0"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0"
-  }
-
-  ,"dependencies": {
+    "@vitejs/plugin-react": "^6.0.2",
+    "concurrently": "^8.2.0",
+    "vite": "^8.0.13"
+  },
+  "dependencies": {
     "@supabase/supabase-js": "^2.27.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
