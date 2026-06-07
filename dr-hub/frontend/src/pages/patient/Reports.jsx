@@ -48,7 +48,22 @@ export default function PatientReports() {
   const [uploadErr, setUploadErr]   = useState('');
   const [deleting, setDeleting]     = useState(null);
 
-  const BASE = 'http://localhost:5001';
+  const handleDownload = async (r) => {
+    try {
+      const res = await fetch(r.file_path);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = r.file_name || r.title || 'report';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch {
+      window.open(r.file_path, '_blank');
+    }
+  };
 
   const load = () => {
     setLoading(true);
@@ -196,20 +211,19 @@ export default function PatientReports() {
               {/* Actions */}
               <div className="flex gap-2 pt-2 border-t border-slate-100">
                 <a
-                  href={`${BASE}/${r.file_path}`}
+                  href={r.file_path}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 btn-ghost text-xs py-1.5 justify-center gap-1"
                 >
                   <EyeIcon className="w-3.5 h-3.5" /> View
                 </a>
-                <a
-                  href={`${BASE}/api/reports/${r.id}/file?download=1`}
-                  download
+                <button
+                  onClick={() => handleDownload(r)}
                   className="flex-1 btn-ghost text-xs py-1.5 justify-center gap-1"
                 >
                   <DownloadIcon className="w-3.5 h-3.5" /> Download
-                </a>
+                </button>
                 <button
                   onClick={() => handleDelete(r.id)}
                   disabled={deleting === r.id}

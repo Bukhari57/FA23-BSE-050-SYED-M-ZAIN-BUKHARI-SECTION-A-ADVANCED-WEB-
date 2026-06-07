@@ -89,7 +89,7 @@ export default function Sidebar({ isOpen, onClose }) {
           </svg>
         </div>
         <div>
-          <span className="text-white font-bold text-base leading-tight block">Doctor Hub</span>
+          <span className="text-white font-extrabold text-base leading-tight block">Dr Hub</span>
           <span className="text-slate-400 text-[11px] leading-tight">Healthcare Platform</span>
         </div>
       </Link>

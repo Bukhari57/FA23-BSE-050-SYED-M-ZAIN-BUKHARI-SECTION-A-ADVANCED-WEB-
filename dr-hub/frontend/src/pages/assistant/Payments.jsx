@@ -7,8 +7,6 @@ import {
   RefreshIcon, InfoIcon,
 } from '../../components/Icons';
 
-const BASE = 'http://localhost:5001';
-
 const STATUSES = ['pending', 'verified', 'rejected'];
 
 const STATUS_CONFIG = {
@@ -126,7 +124,7 @@ export default function Payments() {
     }
   };
 
-  const screenshotUrl = (path) => path ? `${BASE}/${path}` : null;
+  const screenshotUrl = (path) => path || null;
 
   const openPreview = (payment) => {
     const url = screenshotUrl(payment.screenshot_path);
