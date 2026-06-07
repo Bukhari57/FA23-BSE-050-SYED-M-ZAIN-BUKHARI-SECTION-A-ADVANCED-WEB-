@@ -1,22 +1,160 @@
-
 # Doctor Hub — Healthcare Management Platform
 
-A full-stack healthcare platform connecting patients with verified doctors. Patients can search doctors, book appointments, upload payment screenshots, view medical history, manage prescriptions, and message their doctors directly. Doctors manage their profile, clinics, schedules, patient records, and prescriptions. Assistants verify payments. Admins manage the entire platform.
+A full-stack healthcare platform connecting patients with verified doctors. Patients search and book appointments, upload payment proofs, track medical history, prescriptions, reports, and message doctors directly. Doctors manage their clinics, schedules, patient records, and prescriptions. Assistants verify payments. Admins run the whole platform with live analytics.
 
-**Live Demo:** [https://drhubbyzain.vercel.app](https://drhubbyzain.vercel.app)
-**Backend API:** [https://backend-alpha-six-11.vercel.app](https://backend-alpha-six-11.vercel.app)
+**Live:** [https://drhubbyzain.vercel.app](https://drhubbyzain.vercel.app) &nbsp;|&nbsp; **API:** [https://backend-alpha-six-11.vercel.app/api/health](https://backend-alpha-six-11.vercel.app/api/health)
+
+---
+
+## Screenshots
+
+### Authentication
+
+| Login | Register |
+|-------|----------|
+| ![Login](screenshots/21-login.png) | ![Register](screenshots/22-register.png) |
+
+> Split-screen layout — marketing panel on the left, auth form on the right. Demo account credentials are shown directly on the login page.
+
+---
+
+### Patient Portal
+
+#### Dashboard
+![Patient Dashboard](screenshots/01-patient-dashboard.png)
+> Welcome banner with the patient's name, next appointment countdown, stat cards (Total / Upcoming / Completed), and Quick Action shortcuts to every feature.
+
+---
+
+#### Find Doctors
+![Find Doctors](screenshots/02-find-doctors.png)
+> Search verified doctors by name, specialization, treatment type (allopathic / homeopathic / herbal), city, and disease/condition. Each card shows the doctor's experience, fee, clinic city, and treated conditions as tags. One click goes to the booking form.
+
+---
+
+#### My Appointments
+![My Appointments](screenshots/03-my-appointments.png)
+> Full list of bookings with status badges (Pending / Payment Uploaded / Confirmed / Completed / Cancelled). Patients can upload a payment screenshot or cancel directly from this page.
+
+---
+
+#### Medical History
+![Medical History](screenshots/04-medical-history.png)
+> Read-only view of all diagnoses and notes added by doctors after consultations. Records are immutable — the "Immutable records" badge reinforces data integrity.
+
+---
+
+#### My Reports
+![My Reports](screenshots/05-my-reports.png)
+> Upload and organise lab results, X-rays, MRI scans, blood tests, and more. Files are stored in Supabase Storage and categorised by type with a filter tab bar.
+
+---
+
+#### Prescriptions
+![Prescriptions](screenshots/06-prescriptions.png)
+> Digital prescriptions issued by doctors — printable and downloadable. Shows totals for prescriptions, medical records, and treating doctors.
+
+---
+
+### Doctor Portal
+
+#### Dashboard
+![Doctor Dashboard](screenshots/07-doctor-dashboard.png)
+> "Good day, Dr. Zain" greeting with today's appointment count, pending/confirmed counts, total patients, appointment breakdown bar chart, today's schedule, and quick-action links to all tools.
+
+---
+
+#### Appointments
+![Doctor Appointments](screenshots/08-doctor-appointments.png)
+> All patient appointments with status (Pending / Confirmed). Confirmed appointments show a **Mark Complete** button. Filter by status from the dropdown.
+
+---
+
+#### My Profile — Professional Details
+![Doctor Profile](screenshots/09-doctor-profile.png)
+> Edit specialization, qualification, experience, consultation fee, treatment type, and bio. A "Verified" badge appears once the admin approves the doctor.
+
+---
+
+#### My Profile — Clinics
+![Doctor Clinics](screenshots/10-doctor-clinics.png)
+> Add and manage clinics (name, address, city, phone). Each clinic card shows a delete button. Clinics power the booking flow — patients pick a clinic when scheduling.
+
+---
+
+#### My Profile — Schedules
+![Doctor Schedules](screenshots/11-doctor-schedules.png)
+> Weekly availability per clinic. Each slot shows the day, time range, slot duration, and clinic name. Toggle availability on/off or delete a schedule entirely.
+
+---
+
+#### Patient History — View
+![Patient History](screenshots/12-patient-history.png)
+> Three-tab interface: **History** (view records), **Add Record** (write diagnosis), **Add Prescription** (add medicines). Displays all records the doctor has added.
+
+---
+
+#### Patient History — Add Medical Record
+![Add Medical Record](screenshots/13-add-medical-record.png)
+> Select a confirmed or completed appointment from the dropdown, enter diagnosis, and add optional doctor's notes. Saves as a permanent immutable record.
+
+---
+
+#### Patient History — Add Prescription
+![Add Prescription](screenshots/14-add-prescription.png)
+> Select a history record, then add medicines (name, dose, frequency, duration) with an "+ Add another medicine" button, plus optional patient instructions.
+
+---
+
+### Assistant Portal
+
+#### Payment Verification
+![Assistant Payments](screenshots/15-assistant-payments.png)
+> Assistants see only payments for their assigned doctor. Pending / Verified / Rejected tabs. Click a payment to preview the uploaded screenshot on the right panel, then verify or reject with a note.
+
+---
+
+### Admin / Super Admin Portal
+
+#### Admin Dashboard
+![Admin Dashboard](screenshots/16-admin-dashboard.png)
+> Full analytics: Total Users, Patients, Doctors (pending verification count), Revenue, Appointments, Clinics, Medical Records — all as stat cards. Monthly revenue + appointment trend area chart, payment status pie chart, appointment breakdown bar chart, and quick-action shortcuts.
+
+---
+
+#### User Management
+![Admin Users](screenshots/17-admin-users.png)
+> All 8 users listed with role badges, verification status, and action buttons: **Deactivate** (toggle active), **Delete**, and **Reassign** for assistants. Search by name/email or filter by role.
+
+---
+
+#### Doctor Verification
+![Doctor Verification](screenshots/18-admin-doctor-verification.png)
+> Pending and Verified tabs. Admins see each doctor's specialization, treatment type, and contact. One-click **Verify** or **Revoke** actions.
+
+---
+
+#### Clinics
+![Admin Clinics](screenshots/19-admin-clinics.png)
+> Platform-wide clinic registry — name, address, city, phone, number of linked doctors. Searchable and filterable by city.
+
+---
+
+#### Payment Management (Admin)
+![Admin Payments](screenshots/20-admin-payments.png)
+> Admin-level payment verification panel showing all payments across every doctor, clinic, and appointment — same verify/reject interface as assistants but with full platform scope.
 
 ---
 
 ## Demo Accounts
 
-| Role        | Email                          | Password       |
-|-------------|-------------------------------|----------------|
-| Super Admin | superadmin@doctorhub.com       | superadmin123  |
-| Admin       | admin@doctorhub.com            | admin123       |
-| Doctor      | dr.ahmed@doctorhub.com         | doctor123      |
-| Patient     | patient@doctorhub.com          | patient123     |
-| Assistant   | assistant@doctorhub.com        | assistant123   |
+| Role        | Email                        | Password      |
+|-------------|------------------------------|---------------|
+| Super Admin | superadmin@doctorhub.com     | superadmin123 |
+| Admin       | admin@doctorhub.com          | admin123      |
+| Doctor      | dr.ahmed@doctorhub.com       | doctor123     |
+| Patient     | patient@doctorhub.com        | patient123    |
+| Assistant   | assistant@doctorhub.com      | assistant123  |
 
 ---
 
@@ -24,73 +162,71 @@ A full-stack healthcare platform connecting patients with verified doctors. Pati
 
 ### Patient
 - Register / Login / Forgot Password
-- Search and filter verified doctors (by name, specialization, treatment type, city, disease/condition)
-- Book appointments at a doctor's clinic from available time slots
-- Upload payment screenshots for booked appointments
-- View appointment status (pending → payment uploaded → confirmed → completed)
-- View medical history added by doctors
-- View and print prescriptions
-- Upload and manage medical reports (X-rays, lab results, scans)
-- **Message doctors** — real-time polling chat with any doctor you've had an appointment with
-- **Notifications** — bell icon shows alerts for payment verified/rejected, medical records added, and incoming messages
+- Search verified doctors — filter by name, specialization, treatment type, city, disease/condition
+- Book appointments by selecting a clinic and available time slot
+- Upload payment screenshots; re-upload if rejected
+- Track all appointments by status with one-click cancel
+- View immutable medical history records added by doctors
+- View, print, and download digital prescriptions
+- Upload and organise medical reports by type (Lab, X-Ray, MRI, CT, Blood Test)
+- **Real-time messaging** with any doctor you have an appointment with
+- **Bell notifications** — payment verified/rejected, new records, messages
 
 ### Doctor
 - Manage professional profile (specialization, qualification, fee, bio, treatment type)
-- Add / remove conditions treated (used for patient search filtering)
-- Add / delete clinics and link them to your profile
-- Add / delete / toggle availability of weekly schedules per clinic
-- View all appointments for your clinic
-- Mark appointments as completed
-- Add medical history records for patients with confirmed or completed appointments
-- Add prescriptions to medical history records
-- **Message patients** — chat with any patient who has booked with you
+- Add / remove conditions treated (searchable by patients)
+- Add / delete clinics; link multiple clinics to one profile
+- Add / delete / toggle weekly schedules per clinic with configurable slot durations
+- View all patient appointments; mark confirmed ones as completed
+- Add permanent medical history records for confirmed/completed appointments
+- Add digital prescriptions with full medicine details
+- **Message patients** directly from the Messages page
 - Notifications for new bookings
 
 ### Assistant
 - Assigned to a specific doctor (shown on dashboard)
-- View and verify / reject payment screenshots uploaded by patients
-- Payments that are verified automatically confirm the appointment
-- Rejected payments notify the patient to re-upload
+- Preview payment screenshots in-browser
+- Verify payments (automatically confirms the appointment) or reject with a note
+- Rejected payments trigger a patient notification to re-upload
 
 ### Admin / Super Admin
-- Platform-wide analytics dashboard (users, doctors, appointments, revenue, charts)
-- Manage and activate/deactivate users
-- Verify or reject doctor registrations
-- View all clinics
-- View and manage all payments
+- Platform analytics dashboard with charts (revenue trend, appointment breakdown, payment pie)
+- Create, activate/deactivate, delete, or reassign users
+- Verify or revoke doctor registrations
+- View all clinics platform-wide
+- Full payment oversight across all doctors and clinics
 
 ---
 
 ## Tech Stack
 
 ### Frontend
-| Library | Version | Purpose |
-|---|---|---|
-| React | 19 | UI framework |
-| React Router DOM | 7 | SPA routing |
-| Axios | 1.x | HTTP client |
-| Recharts | 3.x | Admin analytics charts |
-| Tailwind CSS | 3.x | Utility-first styling |
-| Vite | 8.x | Build tool |
+| Library | Purpose |
+|---|---|
+| React 19 | UI framework |
+| React Router DOM 7 | SPA routing with role-based guards |
+| Axios | HTTP client with JWT interceptor |
+| Recharts | Analytics charts (area, bar, pie) |
+| Tailwind CSS 3 | Utility-first responsive styling |
+| Vite 8 | Build tool |
 
 ### Backend
-| Library | Version | Purpose |
-|---|---|---|
-| Express | 4.x | HTTP server / REST API |
-| pg (node-postgres) | 8.x | PostgreSQL client |
-| @supabase/supabase-js | 2.x | Supabase Storage (file uploads) |
-| bcryptjs | 2.x | Password hashing |
-| jsonwebtoken | 9.x | JWT authentication |
-| multer | 1.x | Multipart file parsing (memory storage) |
-| express-validator | 7.x | Request validation |
-| uuid | 10.x | UUID generation |
-| dotenv | 16.x | Environment variables |
+| Library | Purpose |
+|---|---|
+| Express 4 | REST API server |
+| pg (node-postgres) | PostgreSQL client with connection pooling |
+| @supabase/supabase-js | File storage (payment screenshots, medical reports) |
+| bcryptjs | Password hashing |
+| jsonwebtoken | JWT auth (7-day tokens) |
+| multer | In-memory multipart file parsing |
+| express-validator | Request body/param validation |
+| uuid | UUID generation for filenames |
 
 ### Infrastructure
 | Service | Usage |
 |---|---|
-| Supabase | PostgreSQL database + file storage (payments bucket, reports bucket) |
-| Vercel | Frontend + Backend serverless deployment |
+| Supabase | PostgreSQL database + `payments` and `reports` storage buckets |
+| Vercel | Frontend (SPA) + Backend (serverless Node) deployment |
 
 ---
 
@@ -98,29 +234,30 @@ A full-stack healthcare platform connecting patients with verified doctors. Pati
 
 ```
 doctor-hub/
+├── screenshots/                     # All UI screenshots (used in this README)
 ├── backend/
-│   ├── server.js                    # Express app entry point
-│   ├── vercel.json                  # Vercel serverless config
+│   ├── server.js                    # Express app + CORS + route registration
+│   ├── vercel.json                  # Routes all requests → server.js
 │   └── src/
 │       ├── config/
-│       │   ├── db.js                # PostgreSQL pool (supports DATABASE_URL + SSL)
-│       │   ├── migrate.js           # Full schema migration script
-│       │   ├── seed.js              # Demo data seeder
-│       │   └── storage.js           # Supabase Storage upload/delete helpers
+│       │   ├── db.js                # pg Pool — supports DATABASE_URL (Supabase pooler) + local
+│       │   ├── migrate.js           # Full schema DDL migration
+│       │   ├── seed.js              # Demo user/doctor/clinic/schedule seeder
+│       │   └── storage.js           # Supabase Storage: uploadToStorage / deleteFromStorage
 │       ├── controllers/
-│       │   ├── adminController.js
+│       │   ├── adminController.js   # Stats, user management, doctor verification
 │       │   ├── appointmentController.js
-│       │   ├── authController.js
-│       │   ├── doctorController.js
-│       │   ├── historyController.js
-│       │   ├── messageController.js
-│       │   ├── paymentController.js
-│       │   └── reportController.js
+│       │   ├── authController.js    # Register, login, forgot password
+│       │   ├── doctorController.js  # Profile, clinics, schedules, diseases, slots
+│       │   ├── historyController.js # Medical history + prescriptions
+│       │   ├── messageController.js # Send, conversations, thread, contacts
+│       │   ├── paymentController.js # Upload screenshot, verify, reject
+│       │   └── reportController.js  # Reports + notifications
 │       ├── middleware/
-│       │   ├── auth.js              # JWT authenticate + authorize(roles)
-│       │   ├── errorHandler.js      # Global error handler
-│       │   ├── upload.js            # Multer memory storage configs
-│       │   └── validate.js          # express-validator error formatter
+│       │   ├── auth.js              # authenticate (JWT) + authorize(roles)
+│       │   ├── errorHandler.js      # Global 500 handler
+│       │   ├── upload.js            # multer memoryStorage instances
+│       │   └── validate.js          # express-validator result formatter
 │       ├── routes/
 │       │   ├── admin.js
 │       │   ├── appointments.js
@@ -129,154 +266,170 @@ doctor-hub/
 │       │   ├── history.js
 │       │   ├── messages.js
 │       │   ├── payments.js
-│       │   └── reports.js
+│       │   └── reports.js           # Also handles GET/PATCH /notifications
 │       └── utils/
-│           └── response.js          # Standardised success/error helpers
+│           └── response.js          # success(res, data) / error(res, msg, code)
 │
 └── frontend/
-    ├── vercel.json                  # SPA fallback rewrite rule
-    ├── vite.config.js
-    ├── tailwind.config.js
+    ├── vercel.json                  # SPA fallback: all non-asset paths → index.html
     └── src/
-        ├── App.jsx                  # Routes + AppLayout (sidebar state)
-        ├── api/
-        │   └── axios.js             # Axios instance with base URL + JWT interceptor
+        ├── App.jsx                  # All routes + AppLayout (sidebar open/close state)
+        ├── api/axios.js             # Axios instance: base URL + Bearer token interceptor
         ├── components/
-        │   ├── Icons.jsx            # All SVG icons as React components
-        │   ├── Navbar.jsx           # Top bar with notifications bell + user menu
-        │   ├── Sidebar.jsx          # Desktop static + mobile slide-in drawer
-        │   └── PrivateRoute.jsx     # Route guard (role-based)
-        ├── context/
-        │   └── AuthContext.jsx      # Auth state, login, logout, token storage
+        │   ├── Icons.jsx            # 30+ Heroicons as React components
+        │   ├── Navbar.jsx           # Notifications bell + user menu + mobile hamburger
+        │   ├── Sidebar.jsx          # Desktop static sidebar + mobile slide-in drawer
+        │   └── PrivateRoute.jsx     # Auth + role guard wrapper
+        ├── context/AuthContext.jsx  # Login, logout, user state, localStorage token
         └── pages/
-            ├── auth/                Login, Register, ForgotPassword
-            ├── patient/             Dashboard, DoctorSearch, BookAppointment,
-            │                        MyAppointments, MedicalHistory, Reports,
-            │                        Prescriptions, Messages
-            ├── doctor/              Dashboard, Appointments, Profile,
-            │                        PatientHistory, Messages
-            ├── assistant/           Dashboard, Payments
-            └── admin/               Dashboard, Users, DoctorVerification, Clinics
+            ├── auth/                Login · Register · ForgotPassword
+            ├── patient/             Dashboard · DoctorSearch · BookAppointment
+            │                        MyAppointments · MedicalHistory · Reports
+            │                        Prescriptions · Messages
+            ├── doctor/              Dashboard · Appointments · Profile
+            │                        PatientHistory · Messages
+            ├── assistant/           Dashboard · Payments
+            └── admin/               Dashboard · Users · DoctorVerification
+                                     Clinics
 ```
 
 ---
 
 ## Database Schema
 
-### Tables
-
 | Table | Description |
 |---|---|
-| `users` | All accounts — role: `patient`, `doctor`, `assistant`, `admin`, `super_admin` |
-| `patients` | Patient profile (DOB, gender, blood group, emergency contact) |
-| `doctors` | Doctor profile (specialization, fee, bio, is_verified) |
-| `assistants` | Links an assistant user to a doctor |
-| `clinics` | Clinic details (name, address, city, phone) |
+| `users` | All accounts — roles: `patient` `doctor` `assistant` `admin` `super_admin` |
+| `patients` | Patient profile: DOB, gender, blood group, emergency contact |
+| `doctors` | Doctor profile: specialization, fee, bio, `is_verified` |
+| `assistants` | Links one assistant user to one doctor |
+| `clinics` | Clinic name, address, city, phone |
 | `doctor_clinics` | Many-to-many: doctor ↔ clinic |
-| `doctor_diseases` | Conditions a doctor treats (used for search filtering) |
-| `doctor_schedules` | Weekly slots per doctor per clinic (day, start_time, end_time, slot_duration_mins) |
-| `appointments` | Booking record — status flow: `pending` → `payment_uploaded` → `confirmed` → `completed` |
-| `payments` | Payment screenshot for an appointment — status: `pending`, `verified`, `rejected` |
-| `medical_history` | Doctor-written diagnosis + notes linked to an appointment |
+| `doctor_diseases` | Conditions a doctor treats — used for patient search filtering |
+| `doctor_schedules` | Weekly slots per doctor per clinic (day, start, end, slot duration) |
+| `appointments` | Booking record with status flow (see below) |
+| `payments` | Payment screenshot for an appointment — `pending` / `verified` / `rejected` |
+| `medical_history` | Immutable diagnosis + notes written by doctor after consultation |
 | `prescriptions` | JSONB medicines array linked to a medical history record |
-| `patient_reports` | Files (lab results, X-rays) uploaded by patients, stored in Supabase Storage |
-| `messages` | Direct messages between users (patient ↔ doctor) |
-| `notifications` | Per-user in-app notifications (bell icon) |
+| `patient_reports` | Files uploaded by patients, stored in Supabase Storage |
+| `messages` | Direct messages between patient and doctor |
+| `notifications` | Per-user bell notifications — booking, payment, records, messages |
+
+### Appointment Status Flow
+
+```
+Patient books appointment
+         │
+         ▼
+      pending  ─────────────────────────────► cancelled
+         │
+         │  Patient uploads payment screenshot
+         ▼
+  payment_uploaded ──────────────────────► cancelled
+         │
+         │  Assistant / Admin verifies payment
+         ▼
+     confirmed ────────────────────────► cancelled
+         │
+         │  Doctor marks completed
+         ▼
+     completed
+```
 
 ---
 
 ## API Reference
 
-All routes are prefixed `/api`. Authenticated routes require `Authorization: Bearer <token>`.
+All routes are prefixed `/api`. Protected routes require `Authorization: Bearer <token>`.
 
-### Auth — `/api/auth`
-| Method | Route | Auth | Description |
+### Auth `/api/auth`
+| Method | Endpoint | Auth | Description |
 |---|---|---|---|
 | POST | `/register` | Public | Create patient account |
-| POST | `/login` | Public | Login, returns JWT |
+| POST | `/login` | Public | Returns JWT + user object |
 | POST | `/forgot-password` | Public | Reset password by email |
 
-### Doctors — `/api/doctors`
-| Method | Route | Auth | Description |
+### Doctors `/api/doctors`
+| Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| GET | `/` | Public | List verified doctors (filters: search, treatment_type, specialization, city, disease, page, limit) |
-| GET | `/:id` | Public | Get doctor by ID |
-| GET | `/:id/slots` | Public | Available time slots for a given date |
+| GET | `/` | Public | List verified doctors (search, filter, paginate) |
+| GET | `/:id` | Public | Doctor detail |
+| GET | `/:id/slots` | Public | Available time slots for a date |
 | GET | `/profile/me` | Doctor | My full profile |
-| PUT | `/profile` | Doctor | Update profile |
+| PUT | `/profile` | Doctor | Update professional details |
 | POST | `/diseases` | Doctor | Add treated condition |
 | DELETE | `/diseases/:id` | Doctor | Remove treated condition |
-| POST | `/clinics` | Doctor | Create new clinic and link to profile |
+| POST | `/clinics` | Doctor | Create + link new clinic |
 | POST | `/clinics/link` | Doctor | Link existing clinic by ID |
-| DELETE | `/clinics/:id` | Doctor | Unlink clinic from profile |
+| DELETE | `/clinics/:id` | Doctor | Unlink clinic |
 | POST | `/schedules` | Doctor | Add weekly schedule |
-| PATCH | `/schedules/:id/toggle` | Doctor | Toggle schedule availability |
+| PATCH | `/schedules/:id/toggle` | Doctor | Toggle availability |
 | DELETE | `/schedules/:id` | Doctor | Delete schedule |
 
-### Appointments — `/api/appointments`
-| Method | Route | Auth | Description |
+### Appointments `/api/appointments`
+| Method | Endpoint | Auth | Description |
 |---|---|---|---|
 | POST | `/` | Patient | Book appointment |
-| GET | `/` | All roles | List appointments (role-scoped) |
-| GET | `/:id` | All roles | Get appointment by ID |
-| PATCH | `/:id/cancel` | Patient/Admin | Cancel appointment |
-| PATCH | `/:id/complete` | Doctor | Mark as completed |
+| GET | `/` | All roles | Role-scoped list |
+| GET | `/:id` | Role-scoped | Single appointment |
+| PATCH | `/:id/cancel` | Patient/Admin | Cancel |
+| PATCH | `/:id/complete` | Doctor | Mark completed |
 
-### Payments — `/api/payments`
-| Method | Route | Auth | Description |
+### Payments `/api/payments`
+| Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| POST | `/:appointmentId/upload` | Patient | Upload payment screenshot |
+| POST | `/:appointmentId/upload` | Patient | Upload screenshot |
 | GET | `/` | Assistant/Admin | List payments |
-| GET | `/:id` | All roles | Get payment by ID |
-| PATCH | `/:id/verify` | Assistant/Admin | Verify payment (confirms appointment) |
-| PATCH | `/:id/reject` | Assistant/Admin | Reject payment |
+| GET | `/:id` | Role-scoped | Single payment |
+| PATCH | `/:id/verify` | Assistant/Admin | Verify → confirms appointment |
+| PATCH | `/:id/reject` | Assistant/Admin | Reject with note |
 
-### Medical History — `/api/history`
-| Method | Route | Auth | Description |
+### Medical History `/api/history`
+| Method | Endpoint | Auth | Description |
 |---|---|---|---|
 | POST | `/` | Doctor | Add history record |
-| GET | `/` | Patient/Doctor/Admin | List history (role-scoped) |
-| GET | `/:id` | Role-scoped | Get record by ID |
+| GET | `/` | Patient/Doctor/Admin | Role-scoped list |
+| GET | `/:id` | Role-scoped | Single record |
 | POST | `/:historyId/prescriptions` | Doctor | Add prescription |
-| GET | `/:historyId/prescriptions` | Role-scoped | Get prescriptions |
+| GET | `/:historyId/prescriptions` | Role-scoped | List prescriptions |
 
-### Reports — `/api/reports`
-| Method | Route | Auth | Description |
+### Reports `/api/reports`
+| Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| POST | `/` | Patient | Upload medical report |
+| POST | `/` | Patient | Upload report file |
 | GET | `/` | Patient/Doctor/Admin | List reports |
-| GET | `/:id` | Role-scoped | Get report details |
-| GET | `/:id/file` | Role-scoped | Download / view file (redirects to Supabase signed URL) |
-| DELETE | `/:id` | Patient/Admin | Delete report |
-| GET | `/notifications` | All | Get user notifications |
-| PATCH | `/notifications/read` | All | Mark all notifications as read |
+| GET | `/:id` | Role-scoped | Report metadata |
+| GET | `/:id/file` | Role-scoped | Download (redirects to signed URL) |
+| DELETE | `/:id` | Patient/Admin | Delete report + storage file |
+| GET | `/notifications` | All | User's notification list |
+| PATCH | `/notifications/read` | All | Mark all as read |
 
-### Messages — `/api/messages`
-| Method | Route | Auth | Description |
+### Messages `/api/messages`
+| Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| GET | `/contacts` | Patient/Doctor | List people you can message (from shared appointments) |
-| GET | `/` | Patient/Doctor | List all conversations |
-| GET | `/:userId` | Patient/Doctor | Get message thread with a user |
+| GET | `/contacts` | Patient/Doctor | People you can message |
+| GET | `/` | Patient/Doctor | All conversations |
+| GET | `/:userId` | Patient/Doctor | Message thread (marks read) |
 | POST | `/` | Patient/Doctor | Send a message |
 
-### Admin — `/api/admin`
-| Method | Route | Auth | Description |
+### Admin `/api/admin`
+| Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| GET | `/stats` | Admin | Platform-wide statistics for dashboard |
-| GET | `/users` | Admin | List all users |
-| PATCH | `/users/:id/toggle` | Admin | Activate / deactivate user |
-| GET | `/doctors` | Admin | List doctors (with verification status) |
+| GET | `/stats` | Admin | Platform analytics |
+| GET | `/users` | Admin | All users |
+| PATCH | `/users/:id/toggle` | Admin | Activate / deactivate |
+| GET | `/doctors` | Admin | Doctors with verification status |
 | PATCH | `/doctors/:id/verify` | Admin | Verify doctor |
-| PATCH | `/doctors/:id/reject` | Admin | Reject doctor verification |
-| GET | `/clinics` | Admin | List all clinics |
+| PATCH | `/doctors/:id/reject` | Admin | Reject doctor |
+| GET | `/clinics` | Admin | All clinics |
 
 ---
 
 ## Environment Variables
 
-### Backend (`backend/.env`)
+### `backend/.env`
 ```env
-# Database — Supabase Transaction Pooler (IPv4 compatible)
+# Supabase Transaction Pooler — IPv4 compatible with Vercel
 DATABASE_URL=postgresql://postgres.PROJECT_REF:PASSWORD@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres
 
 # JWT
@@ -287,82 +440,55 @@ JWT_EXPIRES_IN=7d
 SUPABASE_URL=https://PROJECT_REF.supabase.co
 SUPABASE_SERVICE_KEY=your_supabase_service_role_key
 
-# CORS
+# CORS — your frontend domain
 FRONTEND_URL=https://drhubbyzain.vercel.app
 
 # Local dev only
 PORT=5001
 ```
 
-### Frontend (`frontend/.env`)
+### `frontend/.env`
 ```env
+# Production
 VITE_API_URL=https://backend-alpha-six-11.vercel.app/api
-```
 
-For local development:
-```env
-VITE_API_URL=http://localhost:5001/api
+# Local dev
+# VITE_API_URL=http://localhost:5001/api
 ```
 
 ---
 
-## Local Development Setup
+## Local Development
 
 ### Prerequisites
 - Node.js 18+
-- PostgreSQL (local) **or** Supabase project
+- PostgreSQL (local) **or** a Supabase project
 - npm
 
-### 1. Clone and install
+### Setup
 ```bash
-git clone <repo-url>
-cd doctor-hub
-
-# Install backend deps
-cd backend && npm install
-
-# Install frontend deps
+# 1. Install dependencies
+cd backend  && npm install
 cd ../frontend && npm install
-```
 
-### 2. Configure environment variables
+# 2. Create .env files (see above)
 
-Copy and fill in the `.env` files as shown in the [Environment Variables](#environment-variables) section above.
+# 3. Run migrations
+cd backend && npm run migrate
 
-### 3. Run database migrations
-```bash
-cd backend
-npm run migrate
-```
-
-### 4. Seed demo data
-```bash
+# 4. Seed demo data
 npm run seed
-```
 
-### 5. Start the servers
-
-**Backend (terminal 1):**
-```bash
-cd backend
+# 5. Start backend  (http://localhost:5001)
 npm run dev
-# Runs on http://localhost:5001
-```
 
-**Frontend (terminal 2):**
-```bash
-cd frontend
-npm run dev
-# Runs on http://localhost:5173
+# 6. Start frontend  (http://localhost:5173)
+cd ../frontend && npm run dev
 ```
-
-Open [http://localhost:5173](http://localhost:5173) and log in with any demo account.
 
 ---
 
-## Deployment
-
-The project is deployed on **Vercel** as two separate projects.
+## Deployment (Vercel)
 
 ### Backend
 ```bash
@@ -370,14 +496,7 @@ cd backend
 npx vercel --prod
 ```
 
-Required Vercel environment variables (set in Vercel dashboard):
-- `DATABASE_URL`
-- `JWT_SECRET`
-- `SUPABASE_URL`
-- `SUPABASE_SERVICE_KEY`
-- `FRONTEND_URL`
-
-The `vercel.json` routes all requests through `server.js`:
+`vercel.json` (already committed):
 ```json
 {
   "version": 2,
@@ -386,90 +505,63 @@ The `vercel.json` routes all requests through `server.js`:
 }
 ```
 
+Set these in Vercel Project Settings → Environment Variables:
+`DATABASE_URL` · `JWT_SECRET` · `SUPABASE_URL` · `SUPABASE_SERVICE_KEY` · `FRONTEND_URL`
+
 ### Frontend
 ```bash
 cd frontend
 npx vercel --prod
 ```
 
-The `vercel.json` handles SPA client-side routing:
+`vercel.json` (already committed):
 ```json
 {
   "rewrites": [{ "source": "/((?!assets/).*)", "destination": "/index.html" }]
 }
 ```
 
-Required Vercel environment variable:
-- `VITE_API_URL` — set to your deployed backend URL + `/api`
+Set: `VITE_API_URL` → your backend URL + `/api`
 
 ---
 
 ## Supabase Setup
 
-### Storage Buckets
-Create two public storage buckets in your Supabase dashboard:
-1. `payments` — stores payment screenshots uploaded by patients
-2. `reports` — stores medical report files uploaded by patients
-
-### Database Connection
-Use the **Transaction Pooler** connection string (not the direct connection) to ensure IPv4 compatibility with Vercel:
-
-```
-postgresql://postgres.PROJECT_REF:PASSWORD@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres
-```
-
-Find this in: Supabase Dashboard → Project Settings → Database → Connection string → Transaction pooler
+1. Create a new Supabase project
+2. Go to **Storage** → create two **public** buckets: `payments` and `reports`
+3. Use the **Transaction Pooler** connection string (not the direct connection) — found at:
+   `Project Settings → Database → Connection string → Transaction pooler`
+   ```
+   postgresql://postgres.PROJECT_REF:PASSWORD@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres
+   ```
+4. Run `npm run migrate` to create all tables
+5. Run `npm run seed` to populate demo data
 
 ---
 
-## Role-Based Access Control
+## Role-Based Access
 
-| Route / Action | Patient | Doctor | Assistant | Admin | Super Admin |
-|---|:---:|:---:|:---:|:---:|:---:|
-| Book appointment | ✅ | | | | |
-| Upload payment | ✅ | | | | |
-| View own appointments | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Add medical history | | ✅ | | | |
-| Add prescription | | ✅ | | | |
-| Verify/reject payment | | | ✅ | ✅ | ✅ |
-| Verify doctor | | | | ✅ | ✅ |
-| Manage all users | | | | ✅ | ✅ |
-| View platform stats | | | | ✅ | ✅ |
-| Message contacts | ✅ | ✅ | | | |
+| Action | Patient | Doctor | Assistant | Admin |
+|---|:---:|:---:|:---:|:---:|
+| Search doctors & book appointments | ✅ | | | |
+| Upload payment screenshots | ✅ | | | |
+| View own medical history & prescriptions | ✅ | | | |
+| Add medical history + prescriptions | | ✅ | | |
+| Manage clinics & schedules | | ✅ | | |
+| Verify / reject payments | | | ✅ | ✅ |
+| Verify doctor registrations | | | | ✅ |
+| Manage all users | | | | ✅ |
+| View platform analytics | | | | ✅ |
+| Message appointment contacts | ✅ | ✅ | | |
 
 ---
 
 ## Notification Events
 
-The bell icon in the navbar shows in-app notifications for the following events:
-
-| Event | Who is notified |
+| Trigger | Recipient |
 |---|---|
-| Appointment booked | Doctor |
+| Patient books appointment | Doctor |
 | Payment verified | Patient |
-| Payment rejected | Patient |
-| Medical record added | Patient |
-| Message received | Recipient |
-
----
-
-## Appointment Status Flow
-
-```
-Patient books
-     │
-     ▼
-  pending  ──────────────────────────► cancelled
-     │
-     │  Patient uploads payment screenshot
-     ▼
-payment_uploaded ───────────────────► cancelled
-     │
-     │  Assistant/Admin verifies payment
-     ▼
-  confirmed ──────────────────────► cancelled
-     │
-     │  Doctor marks completed
-     ▼
-  completed
-```
+| Payment rejected (with reason) | Patient |
+| Doctor adds medical record | Patient |
+| New message received | Message recipient |
