@@ -151,17 +151,17 @@ export default function AdminUsers() {
       </div>
 
       {/* Search + filter bar */}
-      <div className="card p-4 flex flex-wrap gap-3 items-end">
-        <div className="flex-1 min-w-48">
+      <div className="card p-4 flex flex-col sm:flex-row flex-wrap gap-3 sm:items-end">
+        <div className="flex-1 min-w-0 sm:min-w-48">
           <label className="label">Search</label>
           <div className="relative">
-            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
             <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && fetchUsers()}
               placeholder="Name or email…" className="input pl-9" />
           </div>
         </div>
-        <div className="w-44">
+        <div className="w-full sm:w-44">
           <label className="label">Role</label>
           <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value)} className="input">
             <option value="">All Roles</option>
@@ -170,12 +170,12 @@ export default function AdminUsers() {
             ))}
           </select>
         </div>
-        <div className="flex gap-2 pb-0.5">
-          <button onClick={() => fetchUsers()} className="btn-primary gap-1.5">
+        <div className="flex gap-2">
+          <button onClick={() => fetchUsers()} className="btn-primary gap-1.5 flex-1 sm:flex-none justify-center">
             <SearchIcon className="w-4 h-4" /> Search
           </button>
           <button onClick={() => { setSearch(''); setRoleFilter(''); fetchUsers('', ''); }}
-            className="btn-ghost gap-1.5">
+            className="btn-ghost gap-1.5" title="Reset">
             <RefreshIcon className="w-4 h-4" />
           </button>
         </div>
@@ -194,109 +194,146 @@ export default function AdminUsers() {
         </div>
       ) : (
         <div className="space-y-3">
-          {users.map((u) => (
-            <div key={u.id} className={`card p-5 ${!u.is_active ? 'opacity-60' : ''}`}>
-              <div className="flex items-center gap-4">
-                {/* Avatar */}
-                <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-sm
-                  ${u.role === 'doctor' ? 'bg-gradient-to-br from-emerald-100 to-emerald-200 text-emerald-700'
-                    : u.role === 'admin' || u.role === 'super_admin' ? 'bg-gradient-to-br from-amber-100 to-amber-200 text-amber-700'
-                    : 'bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700'}`}>
-                  {(u.name || '?').charAt(0).toUpperCase()}
-                </div>
+          {users.map((u) => {
+            const avatarCls = u.role === 'doctor'
+              ? 'bg-gradient-to-br from-emerald-100 to-emerald-200 text-emerald-700'
+              : u.role === 'admin' || u.role === 'super_admin'
+                ? 'bg-gradient-to-br from-amber-100 to-amber-200 text-amber-700'
+                : 'bg-gradient-to-br from-blue-100 to-blue-200 text-blue-700';
 
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <p className="font-semibold text-slate-900">{u.name}</p>
-                    {u.role === 'doctor' && u.is_verified && (
-                      <span className="inline-flex items-center gap-1 badge bg-emerald-50 text-emerald-700 text-[11px]">
-                        <BadgeCheckIcon className="w-3 h-3" /> Verified
-                      </span>
-                    )}
-                    {u.role === 'doctor' && !u.is_verified && (
-                      <span className="badge bg-amber-50 text-amber-600 text-[11px]">Pending Verification</span>
-                    )}
-                    {u.id === me.id && (
-                      <span className="badge bg-slate-100 text-slate-500 text-[10px]">You</span>
-                    )}
+            /* shared action buttons — rendered in both mobile & desktop panels */
+            const actions = (
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {u.role === 'assistant' && (
+                  <button
+                    onClick={() => openAssignModal(u)}
+                    disabled={actioning === u.id + '_assign'}
+                    className="inline-flex items-center gap-1 btn-ghost text-xs py-1.5 px-2.5 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                  >
+                    <UserIcon className="w-3.5 h-3.5 shrink-0" />
+                    {u.assigned_doctor_id ? 'Reassign' : 'Link Doctor'}
+                  </button>
+                )}
+                <button
+                  onClick={() => handleToggle(u.id)}
+                  disabled={u.id === me.id || actioning === u.id + '_toggle'}
+                  className={`inline-flex items-center gap-1 btn-ghost text-xs py-1.5 px-2.5 disabled:opacity-40 ${
+                    u.is_active
+                      ? 'text-amber-600 hover:text-amber-700 hover:bg-amber-50'
+                      : 'text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50'
+                  }`}
+                >
+                  {actioning === u.id + '_toggle' ? '…'
+                    : u.is_active
+                      ? <><XIcon className="w-3.5 h-3.5 shrink-0" /> Deactivate</>
+                      : <><CheckIcon className="w-3.5 h-3.5 shrink-0" /> Activate</>}
+                </button>
+                {me.role === 'super_admin' && u.role !== 'super_admin' && u.id !== me.id && (
+                  <button
+                    onClick={() => handleDelete(u.id)}
+                    disabled={actioning === u.id + '_delete'}
+                    className="inline-flex items-center gap-1 btn-danger text-xs py-1.5 px-2.5"
+                  >
+                    {actioning === u.id + '_delete' ? '…' : <><XIcon className="w-3.5 h-3.5 shrink-0" /> Delete</>}
+                  </button>
+                )}
+              </div>
+            );
+
+            return (
+              <div key={u.id} className={`card p-4 sm:p-5 ${!u.is_active ? 'opacity-60' : ''}`}>
+                <div className="flex items-start gap-3 sm:gap-4">
+
+                  {/* Avatar */}
+                  <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0 font-bold text-sm ${avatarCls}`}>
+                    {(u.name || '?').charAt(0).toUpperCase()}
                   </div>
-                  <p className="text-sm text-slate-500">{u.email}</p>
-                  {u.phone && <p className="text-xs text-slate-400 mt-0.5">{u.phone}</p>}
-                  {u.role === 'doctor' && u.specialization && (
-                    <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                      <span className="badge bg-blue-50 text-blue-700 text-[11px]">{u.specialization}</span>
-                      {u.treatment_type && (
-                        <span className="badge bg-purple-50 text-purple-700 text-[11px] capitalize">{u.treatment_type}</span>
-                      )}
-                    </div>
-                  )}
-                  {u.role === 'doctor' && !u.specialization && (
-                    <p className="text-xs text-amber-500 mt-1">Profile incomplete — no specialization set</p>
-                  )}
-                  {u.role === 'assistant' && (
-                    <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                      {u.assigned_doctor_name ? (
-                        <span className="badge bg-emerald-50 text-emerald-700 text-[11px]">
-                          Linked to {doctorLabel({ name: u.assigned_doctor_name })}
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    {/* Name + verification badges */}
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <p className="font-semibold text-slate-900 leading-snug">{u.name}</p>
+                      {u.role === 'doctor' && u.is_verified && (
+                        <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                          <BadgeCheckIcon className="w-3 h-3 shrink-0" /> Verified
                         </span>
-                      ) : (
-                        <span className="badge bg-amber-50 text-amber-700 text-[11px]">
-                          No doctor linked
+                      )}
+                      {u.role === 'doctor' && !u.is_verified && (
+                        <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold bg-amber-50 text-amber-600 border border-amber-100">
+                          Pending Verification
+                        </span>
+                      )}
+                      {u.id === me.id && (
+                        <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold bg-slate-100 text-slate-500">
+                          You
                         </span>
                       )}
                     </div>
-                  )}
-                </div>
 
-                {/* Role + status + actions */}
-                <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className={`badge ${ROLE_BADGE[u.role] || 'bg-slate-100 text-slate-600'} capitalize`}>
-                    {u.role.replace('_', ' ')}
-                  </span>
-                  <span className={`badge ${u.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600'}`}>
-                    {u.is_active ? 'Active' : 'Inactive'}
-                  </span>
+                    {/* Email */}
+                    <p className="text-sm text-slate-500 mt-0.5 truncate">{u.email}</p>
+                    {u.phone && <p className="text-xs text-slate-400 mt-0.5">{u.phone}</p>}
 
-                  <div className="flex gap-1.5">
+                    {/* Doctor specialization */}
+                    {u.role === 'doctor' && u.specialization && (
+                      <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+                        <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold bg-blue-50 text-blue-700">
+                          {u.specialization}
+                        </span>
+                        {u.treatment_type && (
+                          <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold bg-purple-50 text-purple-700 capitalize">
+                            {u.treatment_type}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    {u.role === 'doctor' && !u.specialization && (
+                      <p className="text-xs text-amber-500 mt-1">Profile incomplete — no specialization set</p>
+                    )}
+
+                    {/* Assistant linked doctor */}
                     {u.role === 'assistant' && (
-                      <button
-                        onClick={() => openAssignModal(u)}
-                        disabled={actioning === u.id + '_assign'}
-                        className="btn-ghost text-xs py-1.5 px-3 gap-1 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                      >
-                        <UserIcon className="w-3.5 h-3.5" />
-                        {u.assigned_doctor_id ? 'Reassign' : 'Link Doctor'}
-                      </button>
+                      <div className="mt-2">
+                        {u.assigned_doctor_name ? (
+                          <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold bg-emerald-50 text-emerald-700">
+                            Linked to {doctorLabel({ name: u.assigned_doctor_name })}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold bg-amber-50 text-amber-700">
+                            No doctor linked
+                          </span>
+                        )}
+                      </div>
                     )}
 
-                    <button
-                      onClick={() => handleToggle(u.id)}
-                      disabled={u.id === me.id || actioning === u.id + '_toggle'}
-                      className={`btn-ghost text-xs py-1.5 px-3 gap-1 disabled:opacity-40 ${
-                        u.is_active ? 'text-amber-600 hover:text-amber-700 hover:bg-amber-50'
-                                    : 'text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50'
-                      }`}
-                    >
-                      {actioning === u.id + '_toggle' ? '…'
-                        : u.is_active ? <><XIcon className="w-3.5 h-3.5" /> Deactivate</>
-                                      : <><CheckIcon className="w-3.5 h-3.5" /> Activate</>}
-                    </button>
-
-                    {me.role === 'super_admin' && u.role !== 'super_admin' && u.id !== me.id && (
-                      <button
-                        onClick={() => handleDelete(u.id)}
-                        disabled={actioning === u.id + '_delete'}
-                        className="btn-danger text-xs py-1.5 px-3 gap-1"
-                      >
-                        {actioning === u.id + '_delete' ? '…' : <><XIcon className="w-3.5 h-3.5" /> Delete</>}
-                      </button>
-                    )}
+                    {/* ── Mobile: role + status + actions (below info) ── */}
+                    <div className="mt-3 flex items-center gap-2 flex-wrap md:hidden">
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ${ROLE_BADGE[u.role] || 'bg-slate-100 text-slate-600'}`}>
+                        {u.role.replace('_', ' ')}
+                      </span>
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${u.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600'}`}>
+                        {u.is_active ? 'Active' : 'Inactive'}
+                      </span>
+                      {actions}
+                    </div>
                   </div>
+
+                  {/* ── Desktop: role + status + actions (right panel) ── */}
+                  <div className="hidden md:flex items-center gap-2 shrink-0 flex-wrap justify-end">
+                    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold capitalize ${ROLE_BADGE[u.role] || 'bg-slate-100 text-slate-600'}`}>
+                      {u.role.replace('_', ' ')}
+                    </span>
+                    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${u.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600'}`}>
+                      {u.is_active ? 'Active' : 'Inactive'}
+                    </span>
+                    {actions}
+                  </div>
+
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
