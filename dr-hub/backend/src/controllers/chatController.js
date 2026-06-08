@@ -270,17 +270,24 @@ const sendMessage = async (req, res, next) => {
       { role: 'user', content: userContent },
     ];
 
-    const completion = await groq.chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
-      messages,
-      max_tokens: 1024,
-      temperature: 0.5,
-    });
+    // Try primary model, fall back to faster/higher-limit model on rate limit
+    const MODELS = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant'];
+    let completion;
+    for (const model of MODELS) {
+      try {
+        completion = await groq.chat.completions.create({ model, messages, max_tokens: 1024, temperature: 0.5 });
+        break;
+      } catch (e) {
+        if (e.status === 429 && model !== MODELS[MODELS.length - 1]) continue;
+        throw e;
+      }
+    }
 
     const reply = completion.choices[0]?.message?.content || 'I apologize, I could not generate a response. Please try again.';
     return res.json({ success: true, data: { reply } });
   } catch (err) {
     if (err.status === 401) return res.status(503).json({ success: false, message: 'Invalid AI API key.' });
+    if (err.status === 429) return res.status(503).json({ success: false, message: "The AI assistant has reached its daily usage limit. It will reset in a few hours — please try again later or visit console.groq.com to upgrade." });
     next(err);
   }
 };
