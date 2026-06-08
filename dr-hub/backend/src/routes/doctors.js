@@ -2,8 +2,10 @@ const router = require('express').Router();
 const { body, param, query } = require('express-validator');
 const validate = require('../middleware/validate');
 const { authenticate, authorize } = require('../middleware/auth');
+const upload = require('../middleware/upload');
 const {
   getDoctors, getDoctorById, getMyProfile, updateProfile,
+  updatePaymentInfo, uploadProfilePicture, uploadQrCode,
   addDisease, removeDisease,
   addClinic, linkClinic, deleteClinic,
   addSchedule, toggleSchedule, deleteSchedule,
@@ -43,6 +45,15 @@ router.put('/profile', [...doctorOnly,
   body('consultation_fee').optional().isFloat({ min: 0 }).withMessage('Fee must be a positive number.'),
   validate,
 ], updateProfile);
+
+// PUT /api/doctors/payment-info
+router.put('/payment-info', doctorOnly, updatePaymentInfo);
+
+// POST /api/doctors/profile-picture
+router.post('/profile-picture', [...doctorOnly, upload.single('file')], uploadProfilePicture);
+
+// POST /api/doctors/qr-code
+router.post('/qr-code', [...doctorOnly, upload.single('file')], uploadQrCode);
 
 // POST /api/doctors/diseases
 router.post('/diseases', [...doctorOnly,

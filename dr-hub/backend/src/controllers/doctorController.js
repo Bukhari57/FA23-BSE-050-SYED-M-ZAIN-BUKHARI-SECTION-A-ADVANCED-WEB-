@@ -1,4 +1,7 @@
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 const pool = require('../config/db');
+const { uploadToStorage, deleteFromStorage } = require('../config/storage');
 const { success, error } = require('../utils/response');
 
 // ─── GET /api/doctors ─────────────────────────────────────────────────────────
@@ -157,6 +160,9 @@ const getMyProfile = async (req, res, next) => {
       `SELECT
          d.id, d.user_id, d.specialization, d.treatment_type, d.experience_years,
          d.qualification, d.consultation_fee, d.bio, d.is_verified, d.created_at,
+         d.profile_picture_url, d.hospital_name, d.hospital_address,
+         d.bank_name, d.account_title, d.bank_account_number,
+         d.jazzcash_number, d.easypaisa_number, d.qr_code_url,
          u.name, u.email, u.phone,
          COALESCE(
            json_agg(DISTINCT jsonb_build_object(
@@ -192,6 +198,7 @@ const updateProfile = async (req, res, next) => {
   const {
     specialization, treatment_type, experience_years,
     qualification, consultation_fee, bio,
+    hospital_name, hospital_address,
   } = req.body;
 
   try {
@@ -201,14 +208,15 @@ const updateProfile = async (req, res, next) => {
     );
 
     if (!existing.length) {
-      // First-time doctor profile creation
       const { rows } = await pool.query(
         `INSERT INTO doctors
-           (user_id, specialization, treatment_type, experience_years, qualification, consultation_fee, bio)
-         VALUES ($1,$2,$3,$4,$5,$6,$7)
+           (user_id, specialization, treatment_type, experience_years, qualification,
+            consultation_fee, bio, hospital_name, hospital_address)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
          RETURNING *`,
         [req.user.id, specialization, treatment_type, experience_years || 0,
-         qualification || null, consultation_fee || 0, bio || null]
+         qualification || null, consultation_fee || 0, bio || null,
+         hospital_name || null, hospital_address || null]
       );
       return success(res, rows[0], 'Doctor profile created.', 201);
     }
@@ -221,14 +229,80 @@ const updateProfile = async (req, res, next) => {
          qualification      = COALESCE($4, qualification),
          consultation_fee   = COALESCE($5, consultation_fee),
          bio                = COALESCE($6, bio),
+         hospital_name      = COALESCE($7, hospital_name),
+         hospital_address   = COALESCE($8, hospital_address),
          updated_at         = NOW()
-       WHERE user_id = $7
+       WHERE user_id = $9
        RETURNING *`,
       [specialization, treatment_type, experience_years, qualification,
-       consultation_fee, bio, req.user.id]
+       consultation_fee, bio, hospital_name, hospital_address, req.user.id]
     );
 
     return success(res, rows[0], 'Profile updated.');
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ─── PUT /api/doctors/payment-info ────────────────────────────────────────────
+const updatePaymentInfo = async (req, res, next) => {
+  const { bank_name, account_title, bank_account_number, jazzcash_number, easypaisa_number } = req.body;
+  try {
+    const { rows } = await pool.query(
+      `UPDATE doctors SET
+         bank_name            = COALESCE($1, bank_name),
+         account_title        = COALESCE($2, account_title),
+         bank_account_number  = COALESCE($3, bank_account_number),
+         jazzcash_number      = COALESCE($4, jazzcash_number),
+         easypaisa_number     = COALESCE($5, easypaisa_number),
+         updated_at           = NOW()
+       WHERE user_id = $6
+       RETURNING bank_name, account_title, bank_account_number, jazzcash_number, easypaisa_number`,
+      [bank_name || null, account_title || null, bank_account_number || null,
+       jazzcash_number || null, easypaisa_number || null, req.user.id]
+    );
+    if (!rows.length) return error(res, 'Doctor profile not found.', 404);
+    return success(res, rows[0], 'Payment info updated.');
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ─── POST /api/doctors/profile-picture ────────────────────────────────────────
+const uploadProfilePicture = async (req, res, next) => {
+  if (!req.file) return error(res, 'No file uploaded.', 400);
+  try {
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    const filename = `profile_${uuidv4()}${ext}`;
+    const url = await uploadToStorage(req.file.buffer, 'doctors', filename, req.file.mimetype);
+
+    const { rows } = await pool.query(
+      `UPDATE doctors SET profile_picture_url=$1, updated_at=NOW()
+       WHERE user_id=$2 RETURNING profile_picture_url`,
+      [url, req.user.id]
+    );
+    if (!rows.length) return error(res, 'Doctor profile not found.', 404);
+    return success(res, rows[0], 'Profile picture updated.');
+  } catch (err) {
+    next(err);
+  }
+};
+
+// ─── POST /api/doctors/qr-code ────────────────────────────────────────────────
+const uploadQrCode = async (req, res, next) => {
+  if (!req.file) return error(res, 'No file uploaded.', 400);
+  try {
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    const filename = `qr_${uuidv4()}${ext}`;
+    const url = await uploadToStorage(req.file.buffer, 'doctors', filename, req.file.mimetype);
+
+    const { rows } = await pool.query(
+      `UPDATE doctors SET qr_code_url=$1, updated_at=NOW()
+       WHERE user_id=$2 RETURNING qr_code_url`,
+      [url, req.user.id]
+    );
+    if (!rows.length) return error(res, 'Doctor profile not found.', 404);
+    return success(res, rows[0], 'QR code updated.');
   } catch (err) {
     next(err);
   }
@@ -488,6 +562,7 @@ const deleteSchedule = async (req, res, next) => {
 
 module.exports = {
   getDoctors, getDoctorById, getMyProfile, updateProfile,
+  updatePaymentInfo, uploadProfilePicture, uploadQrCode,
   addDisease, removeDisease,
   addClinic, linkClinic, deleteClinic,
   addSchedule, toggleSchedule, deleteSchedule,

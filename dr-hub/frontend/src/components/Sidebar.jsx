@@ -27,6 +27,7 @@ const menus = {
   assistant: [
     { to: '/assistant/dashboard', label: 'Dashboard',        icon: HomeIcon },
     { to: '/assistant/payments',  label: 'Verify Payments',  icon: CreditCardIcon },
+    { to: '/assistant/messages',  label: 'Messages',          icon: MessageIcon },
   ],
   admin: [
     { to: '/admin/dashboard',  label: 'Dashboard',           icon: ChartBarIcon },

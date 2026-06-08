@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
@@ -25,8 +26,9 @@ import DoctorMessages     from './pages/doctor/Messages';
 
 import PatientMessages    from './pages/patient/Messages';
 
-import AssistantDashboard from './pages/assistant/Dashboard';
-import AssistantPayments  from './pages/assistant/Payments';
+import AssistantDashboard  from './pages/assistant/Dashboard';
+import AssistantPayments   from './pages/assistant/Payments';
+import AssistantMessages   from './pages/assistant/Messages';
 
 import AdminDashboard     from './pages/admin/Dashboard';
 import AdminUsers         from './pages/admin/Users';
@@ -36,7 +38,7 @@ import AdminClinics       from './pages/admin/Clinics';
 function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
-    <div className="min-h-screen flex bg-slate-100">
+    <div className="min-h-screen flex bg-slate-100 dark:bg-slate-900">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="flex-1 flex flex-col min-w-0">
         <Navbar onMenuClick={() => setSidebarOpen(true)} />
@@ -50,6 +52,7 @@ function AppLayout() {
 
 export default function App() {
   return (
+    <ThemeProvider>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -90,6 +93,7 @@ export default function App() {
             {/* Assistant */}
             <Route path="/assistant/dashboard" element={<PrivateRoute roles={['assistant']}><AssistantDashboard /></PrivateRoute>} />
             <Route path="/assistant/payments"  element={<PrivateRoute roles={['assistant']}><AssistantPayments /></PrivateRoute>} />
+            <Route path="/assistant/messages"  element={<PrivateRoute roles={['assistant']}><AssistantMessages /></PrivateRoute>} />
 
             {/* Admin + Super Admin */}
             <Route path="/admin/dashboard" element={<PrivateRoute roles={['admin','super_admin']}><AdminDashboard /></PrivateRoute>} />
@@ -101,5 +105,6 @@ export default function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </ThemeProvider>
   );
 }

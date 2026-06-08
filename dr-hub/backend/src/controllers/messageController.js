@@ -139,13 +139,34 @@ const getContacts = async (req, res, next) => {
         'SELECT id FROM doctors WHERE user_id=$1', [req.user.id]
       );
       if (doc) {
-        const { rows } = await pool.query(
+        const { rows: patients } = await pool.query(
           `SELECT DISTINCT pt.user_id AS id, u.name, u.role
            FROM appointments a
            JOIN patients pt ON pt.id = a.patient_id
            JOIN users    u  ON u.id  = pt.user_id
            WHERE a.doctor_id=$1 AND a.status NOT IN ('cancelled')`,
           [doc.id]
+        );
+        const { rows: assistants } = await pool.query(
+          `SELECT DISTINCT a.user_id AS id, u.name, u.role
+           FROM assistants a
+           JOIN users u ON u.id = a.user_id
+           WHERE a.doctor_id=$1`,
+          [doc.id]
+        );
+        contacts = [...patients, ...assistants];
+      }
+    } else if (req.user.role === 'assistant') {
+      const { rows: [asst] } = await pool.query(
+        'SELECT doctor_id FROM assistants WHERE user_id=$1', [req.user.id]
+      );
+      if (asst) {
+        const { rows } = await pool.query(
+          `SELECT d.user_id AS id, u.name, u.role
+           FROM doctors d
+           JOIN users u ON u.id = d.user_id
+           WHERE d.id=$1`,
+          [asst.doctor_id]
         );
         contacts = rows;
       }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import api from '../api/axios';
 import { BellIcon, LogoutIcon, ChevronDownIcon } from './Icons';
 
@@ -19,6 +20,7 @@ const PAGE_TITLES = {
   '/doctor/messages':      'Messages',
   '/assistant/dashboard':  'Dashboard',
   '/assistant/payments':   'Verify Payments',
+  '/assistant/messages':   'Messages',
   '/admin/dashboard':      'Dashboard',
   '/admin/users':          'User Management',
   '/admin/doctors':        'Doctor Verification',
@@ -28,6 +30,7 @@ const PAGE_TITLES = {
 
 export default function Navbar({ onMenuClick }) {
   const { user, logout } = useAuth();
+  const { dark, toggle: toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const [notifications, setNotifications] = useState([]);
@@ -78,7 +81,7 @@ export default function Navbar({ onMenuClick }) {
   };
 
   return (
-    <header className="h-14 sm:h-16 bg-white border-b border-slate-200 flex items-center justify-between px-3 sm:px-6 sticky top-0 z-40 shadow-sm">
+    <header className="h-14 sm:h-16 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-3 sm:px-6 sticky top-0 z-40 shadow-sm">
       {/* Left: hamburger (mobile) + page title */}
       <div className="flex items-center gap-2 sm:gap-3 min-w-0">
         {/* Hamburger — mobile only */}
@@ -91,10 +94,28 @@ export default function Navbar({ onMenuClick }) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <h1 className="text-base sm:text-lg font-semibold text-slate-900 truncate">{pageTitle}</h1>
+        <h1 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-slate-100 truncate">{pageTitle}</h1>
       </div>
 
       <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+        {/* Dark mode toggle */}
+        <button
+          onClick={toggleTheme}
+          className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+          aria-label="Toggle dark mode"
+          title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {dark ? (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M18.364 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          )}
+        </button>
+
         {/* Notification Bell */}
         <div className="relative" ref={notifRef}>
           <button
@@ -110,9 +131,9 @@ export default function Navbar({ onMenuClick }) {
           </button>
 
           {showNotif && (
-            <div className="absolute right-0 top-12 w-72 sm:w-80 bg-white rounded-2xl shadow-card-lg border border-slate-100 overflow-hidden z-50 animate-slide-up">
-              <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
-                <p className="font-semibold text-sm text-slate-900">Notifications</p>
+            <div className="absolute right-0 top-12 w-72 sm:w-80 bg-white dark:bg-slate-800 rounded-2xl shadow-card-lg border border-slate-100 dark:border-slate-700 overflow-hidden z-50 animate-slide-up">
+              <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                <p className="font-semibold text-sm text-slate-900 dark:text-slate-100">Notifications</p>
                 {notifications.length > 0 && (
                   <button onClick={handleMarkRead} className="text-xs text-blue-600 hover:underline">
                     Mark all read
@@ -155,10 +176,10 @@ export default function Navbar({ onMenuClick }) {
           </button>
 
           {showUser && (
-            <div className="absolute right-0 top-12 w-52 bg-white rounded-2xl shadow-card-lg border border-slate-100 overflow-hidden z-50 animate-slide-up">
-              <div className="px-4 py-3 border-b border-slate-100">
-                <p className="text-sm font-semibold text-slate-900">{user?.name}</p>
-                <p className="text-xs text-slate-500 mt-0.5 truncate">{user?.email}</p>
+            <div className="absolute right-0 top-12 w-52 bg-white dark:bg-slate-800 rounded-2xl shadow-card-lg border border-slate-100 dark:border-slate-700 overflow-hidden z-50 animate-slide-up">
+              <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-700">
+                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{user?.name}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{user?.email}</p>
                 <span className={`mt-1.5 inline-block text-[11px] font-semibold px-2 py-0.5 rounded-full capitalize ${roleColors[user?.role] || 'bg-slate-100 text-slate-600'}`}>
                   {user?.role?.replace('_', ' ')}
                 </span>
