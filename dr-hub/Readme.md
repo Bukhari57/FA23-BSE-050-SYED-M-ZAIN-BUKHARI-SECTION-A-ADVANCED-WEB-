@@ -148,7 +148,7 @@ A full-stack healthcare platform connecting patients with verified doctors. Pati
 
 ### Doctor Hub AI — Chat Assistant
 
-![AI Chat Widget](screenshots/Screenshot%202026-06-08%20at%209.18.32%20AM.png)
+![AI Chat Widget](screenshots/23-chat-widget.png)
 > Floating AI assistant available on every page. Custom medical cross + EKG icon, pill-shaped FAB with animated "online" dot, quick-action chips (Find Doctors, Appointments, Prescriptions, Payments), and a unified frosted-glass input bar. Powered by Groq (Llama 3.3 70B).
 
 ---
