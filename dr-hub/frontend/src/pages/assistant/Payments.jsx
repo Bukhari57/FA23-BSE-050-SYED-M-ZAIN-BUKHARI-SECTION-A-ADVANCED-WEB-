@@ -183,7 +183,7 @@ export default function Payments() {
                 key={status}
                 onClick={() => setFilter(status)}
                 className={`flex h-10 items-center gap-2 rounded-xl px-4 text-sm font-semibold capitalize transition-all ${
-                  filter === status ? sc.active : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+                  filter === status ? sc.active : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-slate-100'
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -200,16 +200,16 @@ export default function Payments() {
 
       <div className="grid gap-6 2xl:grid-cols-[minmax(0,1fr)_380px]">
         <section className="space-y-3">
-          <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+          <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
             <ActiveIcon className="h-4 w-4" />
             {activeConfig.label} payments
-            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500">{counts[filter]}</span>
+            <span className="rounded-full bg-slate-100 dark:bg-slate-700 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400">{counts[filter]}</span>
           </div>
 
           {loading ? (
             <div className="space-y-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-40 animate-pulse rounded-2xl bg-white/80 ring-1 ring-slate-100" />
+                <div key={i} className="h-40 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-700 ring-1 ring-slate-100 dark:ring-slate-600" />
               ))}
             </div>
           ) : payments.length === 0 ? (
@@ -234,8 +234,8 @@ export default function Payments() {
                         type="button"
                         onClick={() => openPreview(p)}
                         disabled={!imgUrl}
-                        className={`group relative h-32 w-full shrink-0 overflow-hidden rounded-xl border bg-slate-50 lg:w-28 ${
-                          imgUrl ? 'border-slate-200 cursor-pointer' : 'border-slate-100 cursor-default'
+                        className={`group relative h-32 w-full shrink-0 overflow-hidden rounded-xl border bg-slate-50 dark:bg-slate-700 lg:w-28 ${
+                          imgUrl ? 'border-slate-200 dark:border-slate-600 cursor-pointer' : 'border-slate-100 dark:border-slate-700 cursor-default'
                         }`}
                         title={imgUrl ? 'Preview payment screenshot' : 'No screenshot uploaded'}
                       >
@@ -255,15 +255,15 @@ export default function Payments() {
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                           <div className="min-w-0">
                             <div className="flex flex-wrap items-center gap-2">
-                              <h2 className="truncate text-lg font-bold text-slate-950">{p.patient_name}</h2>
+                              <h2 className="truncate text-lg font-bold text-slate-950 dark:text-slate-100">{p.patient_name}</h2>
                               <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-bold ${sc.badge}`}>
                                 {sc.label}
                               </span>
                             </div>
-                            <div className="mt-3 grid gap-2 text-sm text-slate-500 md:grid-cols-2">
+                            <div className="mt-3 grid gap-2 text-sm text-slate-500 dark:text-slate-400 md:grid-cols-2">
                               <span className="flex min-w-0 items-center gap-2">
                                 <UserIcon className="h-4 w-4 shrink-0 text-slate-400" />
-                                <span className="truncate">Dr. {p.doctor_name}</span>
+                                <span className="truncate">{p.doctor_name}</span>
                               </span>
                               <span className="flex min-w-0 items-center gap-2">
                                 <BuildingIcon className="h-4 w-4 shrink-0 text-slate-400" />
@@ -280,7 +280,7 @@ export default function Payments() {
                             </div>
                           </div>
                           <div className="text-left sm:text-right">
-                            <p className="text-2xl font-black text-slate-950">{formatAmount(p.amount)}</p>
+                            <p className="text-2xl font-black text-slate-950 dark:text-slate-100">{formatAmount(p.amount)}</p>
                             {imgUrl && (
                               <button onClick={() => openPreview(p)} className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700">
                                 <EyeIcon className="h-3.5 w-3.5" />
@@ -291,14 +291,14 @@ export default function Payments() {
                         </div>
 
                         {(p.rejection_note || p.verified_by_name) && (
-                          <div className="mt-4 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2 text-xs text-slate-600">
+                          <div className="mt-4 rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-700/50 px-3 py-2 text-xs text-slate-600 dark:text-slate-300">
                             {p.rejection_note && <span className="text-rose-600">Rejected: {p.rejection_note}</span>}
                             {p.verified_by_name && p.status === 'verified' && <span className="text-emerald-700">Verified by {p.verified_by_name}</span>}
                           </div>
                         )}
 
                         {p.status === 'pending' && (
-                          <div className="mt-4 flex flex-wrap gap-2 border-t border-slate-100 pt-4">
+                          <div className="mt-4 flex flex-wrap gap-2 border-t border-slate-100 dark:border-slate-700 pt-4">
                             <button
                               onClick={() => handleVerify(p.id)}
                               disabled={actioning === `${p.id}_verify`}
@@ -326,35 +326,35 @@ export default function Payments() {
         </section>
 
         <aside className="hidden xl:block">
-          <div className="sticky top-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="sticky top-6 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm">
             {selectedPayment ? (
               <>
-                <div className="border-b border-slate-100 p-4">
+                <div className="border-b border-slate-100 dark:border-slate-700 p-4">
                   <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Receipt preview</p>
-                  <p className="mt-1 truncate text-sm font-semibold text-slate-900">{selectedPayment.patient_name}</p>
+                  <p className="mt-1 truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{selectedPayment.patient_name}</p>
                 </div>
-                <button type="button" onClick={() => openPreview(selectedPayment)} className="block h-[460px] w-full bg-slate-50">
+                <button type="button" onClick={() => openPreview(selectedPayment)} className="block h-[460px] w-full bg-slate-50 dark:bg-slate-700">
                   <img src={screenshotUrl(selectedPayment.screenshot_path)} alt="Payment receipt preview" className="h-full w-full object-contain" />
                 </button>
-                <div className="grid grid-cols-2 gap-3 border-t border-slate-100 p-4 text-sm">
+                <div className="grid grid-cols-2 gap-3 border-t border-slate-100 dark:border-slate-700 p-4 text-sm">
                   <div>
                     <p className="text-xs font-semibold text-slate-400">Amount</p>
-                    <p className="font-bold text-slate-950">{formatAmount(selectedPayment.amount)}</p>
+                    <p className="font-bold text-slate-950 dark:text-slate-100">{formatAmount(selectedPayment.amount)}</p>
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-slate-400">Status</p>
-                    <p className="font-bold capitalize text-slate-950">{selectedPayment.status}</p>
+                    <p className="font-bold capitalize text-slate-950 dark:text-slate-100">{selectedPayment.status}</p>
                   </div>
                   <div className="col-span-2">
                     <p className="text-xs font-semibold text-slate-400">Doctor</p>
-                    <p className="truncate font-bold text-slate-950">Dr. {selectedPayment.doctor_name}</p>
+                    <p className="truncate font-bold text-slate-950 dark:text-slate-100">{selectedPayment.doctor_name}</p>
                   </div>
                 </div>
               </>
             ) : (
               <div className="flex h-[560px] flex-col items-center justify-center p-8 text-center">
                 <InfoIcon className="mb-3 h-10 w-10 text-slate-300" />
-                <p className="font-semibold text-slate-700">Select a receipt</p>
+                <p className="font-semibold text-slate-700 dark:text-slate-300">Select a receipt</p>
                 <p className="mt-1 text-sm text-slate-400">Open a payment screenshot to inspect the upload before verifying it.</p>
               </div>
             )}
@@ -364,35 +364,35 @@ export default function Payments() {
 
       {preview && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm" onClick={() => setPreview(null)}>
-          <div className="relative grid max-h-[92vh] w-full max-w-6xl overflow-hidden rounded-2xl bg-white shadow-2xl sm:grid-cols-[minmax(0,1fr)_320px]" onClick={(e) => e.stopPropagation()}>
+          <div className="relative grid max-h-[92vh] w-full max-w-6xl overflow-hidden rounded-2xl bg-white dark:bg-slate-800 shadow-2xl sm:grid-cols-[minmax(0,1fr)_320px]" onClick={(e) => e.stopPropagation()}>
             <button onClick={() => setPreview(null)} className="absolute right-4 top-4 z-10 rounded-full bg-slate-950/80 p-2 text-white hover:bg-slate-950">
               <XIcon className="h-5 w-5" />
             </button>
-            <div className="flex min-h-[420px] items-center justify-center bg-slate-100 p-4 lg:min-h-[680px]">
+            <div className="flex min-h-[420px] items-center justify-center bg-slate-100 dark:bg-slate-900 p-4 lg:min-h-[680px]">
               <img src={preview.url} alt="Payment screenshot" className="max-h-[84vh] w-full object-contain" />
             </div>
             {selectedPayment && (
-              <div className="space-y-5 overflow-y-auto border-t border-slate-100 p-6 lg:border-l lg:border-t-0">
+              <div className="space-y-5 overflow-y-auto border-t border-slate-100 dark:border-slate-700 p-6 lg:border-l lg:border-t-0">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Receipt details</p>
-                  <h3 className="mt-1 text-xl font-bold text-slate-950">{selectedPayment.patient_name}</h3>
+                  <h3 className="mt-1 text-xl font-bold text-slate-950 dark:text-slate-100">{selectedPayment.patient_name}</h3>
                 </div>
                 <dl className="space-y-3 text-sm">
                   <div>
                     <dt className="font-semibold text-slate-400">Amount</dt>
-                    <dd className="text-lg font-black text-slate-950">{formatAmount(selectedPayment.amount)}</dd>
+                    <dd className="text-lg font-black text-slate-950 dark:text-slate-100">{formatAmount(selectedPayment.amount)}</dd>
                   </div>
                   <div>
                     <dt className="font-semibold text-slate-400">Doctor</dt>
-                    <dd className="font-semibold text-slate-800">Dr. {selectedPayment.doctor_name}</dd>
+                    <dd className="font-semibold text-slate-800 dark:text-slate-200">{selectedPayment.doctor_name}</dd>
                   </div>
                   <div>
                     <dt className="font-semibold text-slate-400">Clinic</dt>
-                    <dd className="font-semibold text-slate-800">{selectedPayment.clinic_name}</dd>
+                    <dd className="font-semibold text-slate-800 dark:text-slate-200">{selectedPayment.clinic_name}</dd>
                   </div>
                   <div>
                     <dt className="font-semibold text-slate-400">Appointment</dt>
-                    <dd className="font-semibold text-slate-800">{formatDate(selectedPayment.appointment_date)} at {formatTime(selectedPayment.appointment_time)}</dd>
+                    <dd className="font-semibold text-slate-800 dark:text-slate-200">{formatDate(selectedPayment.appointment_date)} at {formatTime(selectedPayment.appointment_time)}</dd>
                   </div>
                 </dl>
                 {selectedPayment.status === 'pending' && (
@@ -415,9 +415,9 @@ export default function Payments() {
 
       {rejectId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl animate-slide-up">
-            <h3 className="text-lg font-bold text-slate-950">Reject Payment</h3>
-            <p className="mt-1 text-sm text-slate-500">Add a short note so the patient knows what to correct.</p>
+          <div className="w-full max-w-md rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-2xl animate-slide-up">
+            <h3 className="text-lg font-bold text-slate-950 dark:text-slate-100">Reject Payment</h3>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Add a short note so the patient knows what to correct.</p>
             <textarea
               rows={4}
               value={rejNote}

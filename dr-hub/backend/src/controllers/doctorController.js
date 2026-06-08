@@ -69,7 +69,7 @@ const getDoctors = async (req, res, next) => {
     const dataQuery = `
       SELECT
         d.id, d.specialization, d.treatment_type, d.experience_years,
-        d.qualification, d.consultation_fee, d.bio,
+        d.qualification, d.consultation_fee, d.bio, d.profile_picture_url,
         u.name, u.email, u.phone,
         COALESCE(
           json_agg(DISTINCT dd.disease_name) FILTER (WHERE dd.disease_name IS NOT NULL),
@@ -274,7 +274,7 @@ const uploadProfilePicture = async (req, res, next) => {
   try {
     const ext = path.extname(req.file.originalname).toLowerCase();
     const filename = `profile_${uuidv4()}${ext}`;
-    const url = await uploadToStorage(req.file.buffer, 'doctors', filename, req.file.mimetype);
+    const url = await uploadToStorage(req.file.buffer, 'reports', filename, req.file.mimetype);
 
     const { rows } = await pool.query(
       `UPDATE doctors SET profile_picture_url=$1, updated_at=NOW()
@@ -294,7 +294,7 @@ const uploadQrCode = async (req, res, next) => {
   try {
     const ext = path.extname(req.file.originalname).toLowerCase();
     const filename = `qr_${uuidv4()}${ext}`;
-    const url = await uploadToStorage(req.file.buffer, 'doctors', filename, req.file.mimetype);
+    const url = await uploadToStorage(req.file.buffer, 'reports', filename, req.file.mimetype);
 
     const { rows } = await pool.query(
       `UPDATE doctors SET qr_code_url=$1, updated_at=NOW()

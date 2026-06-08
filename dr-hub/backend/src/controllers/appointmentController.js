@@ -142,7 +142,10 @@ const getAppointments = async (req, res, next) => {
          a.*,
          up.name   AS patient_name, up.phone AS patient_phone,
          ud.name   AS doctor_name,  ud.phone AS doctor_phone,
-         d.specialization, d.treatment_type,
+         d.specialization, d.treatment_type, d.consultation_fee,
+         d.profile_picture_url,
+         d.bank_name, d.account_title, d.bank_account_number,
+         d.jazzcash_number, d.easypaisa_number, d.qr_code_url,
          c.name    AS clinic_name,  c.address AS clinic_address,
          pay.id    AS payment_id,   pay.status AS payment_status,
          pay.screenshot_path

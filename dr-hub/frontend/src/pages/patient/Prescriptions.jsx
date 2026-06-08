@@ -200,7 +200,7 @@ export default function PatientPrescriptions() {
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-slate-900 truncate">{rx.record.diagnosis}</p>
                   <p className="text-sm text-slate-500 mt-0.5">
-                    Dr. {rx.record.doctor_name}
+                    {rx.record.doctor_name}
                     {rx.record.specialization && ` · ${rx.record.specialization}`}
                     {' · '}
                     {new Date(rx.created_at).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })}

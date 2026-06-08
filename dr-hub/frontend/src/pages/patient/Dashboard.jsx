@@ -8,11 +8,12 @@ import {
 } from '../../components/Icons';
 
 const STATUS_COLORS = {
-  pending:          { bg: 'bg-amber-50',   text: 'text-amber-700'   },
-  payment_uploaded: { bg: 'bg-blue-50',    text: 'text-blue-700'    },
-  confirmed:        { bg: 'bg-emerald-50', text: 'text-emerald-700' },
-  completed:        { bg: 'bg-slate-100',  text: 'text-slate-600'   },
-  cancelled:        { bg: 'bg-red-50',     text: 'text-red-600'     },
+  pending:          { bg: 'bg-amber-50 dark:bg-amber-900/30',    text: 'text-amber-700 dark:text-amber-400'    },
+  payment_uploaded: { bg: 'bg-blue-50 dark:bg-blue-900/30',     text: 'text-blue-700 dark:text-blue-400'     },
+  payment_verified: { bg: 'bg-indigo-50 dark:bg-indigo-900/30', text: 'text-indigo-700 dark:text-indigo-400' },
+  confirmed:        { bg: 'bg-emerald-50 dark:bg-emerald-900/30',text: 'text-emerald-700 dark:text-emerald-400' },
+  completed:        { bg: 'bg-slate-100 dark:bg-slate-700',      text: 'text-slate-600 dark:text-slate-300'   },
+  cancelled:        { bg: 'bg-red-50 dark:bg-red-900/30',       text: 'text-red-600 dark:text-red-400'       },
 };
 
 export default function PatientDashboard() {
@@ -58,7 +59,7 @@ export default function PatientDashboard() {
             <div className="flex items-center gap-2">
               <ClockIcon className="w-4 h-4 text-white/70 flex-shrink-0" />
               <p className="text-white text-sm font-medium">
-                Dr. {nextAppt.doctor_name} · {nextAppt.appointment_date} at {nextAppt.appointment_time?.slice(0,5)}
+                {nextAppt.doctor_name} · {nextAppt.appointment_date} at {nextAppt.appointment_time?.slice(0,5)}
               </p>
             </div>
           </div>
@@ -88,20 +89,20 @@ export default function PatientDashboard() {
 
       {/* Quick actions */}
       <div>
-        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">Quick Actions</h2>
+        <h2 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-3">Quick Actions</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {[
-            { to: '/patient/doctors',       icon: SearchIcon,    label: 'Find a Doctor',     desc: 'Search by specialization or disease', color: 'hover:border-blue-200 bg-blue-50/30' },
-            { to: '/patient/appointments',  icon: CalendarIcon,  label: 'My Appointments',   desc: 'View bookings & upload payment',      color: 'hover:border-amber-200 bg-amber-50/30' },
-            { to: '/patient/history',       icon: ClipboardIcon, label: 'Medical History',   desc: 'View diagnoses from your doctors',    color: 'hover:border-emerald-200 bg-emerald-50/30' },
-            { to: '/patient/reports',       icon: FolderIcon,    label: 'My Reports',        desc: 'Lab results, X-rays, scans',          color: 'hover:border-violet-200 bg-violet-50/30' },
-            { to: '/patient/prescriptions', icon: PillIcon,      label: 'Prescriptions',     desc: 'View and print your prescriptions',   color: 'hover:border-rose-200 bg-rose-50/30' },
+            { to: '/patient/doctors',       icon: SearchIcon,    label: 'Find a Doctor',     desc: 'Search by specialization or disease', color: 'hover:border-blue-200 dark:hover:border-blue-800 bg-blue-50/30 dark:bg-blue-900/10' },
+            { to: '/patient/appointments',  icon: CalendarIcon,  label: 'My Appointments',   desc: 'View bookings & upload payment',      color: 'hover:border-amber-200 dark:hover:border-amber-800 bg-amber-50/30 dark:bg-amber-900/10' },
+            { to: '/patient/history',       icon: ClipboardIcon, label: 'Medical History',   desc: 'View diagnoses from your doctors',    color: 'hover:border-emerald-200 dark:hover:border-emerald-800 bg-emerald-50/30 dark:bg-emerald-900/10' },
+            { to: '/patient/reports',       icon: FolderIcon,    label: 'My Reports',        desc: 'Lab results, X-rays, scans',          color: 'hover:border-violet-200 dark:hover:border-violet-800 bg-violet-50/30 dark:bg-violet-900/10' },
+            { to: '/patient/prescriptions', icon: PillIcon,      label: 'Prescriptions',     desc: 'View and print your prescriptions',   color: 'hover:border-rose-200 dark:hover:border-rose-800 bg-rose-50/30 dark:bg-rose-900/10' },
           ].map((l) => (
             <Link key={l.to} to={l.to}
               className={`card border-2 border-transparent p-4 transition-all duration-200 group ${l.color}`}>
-              <l.icon className="w-6 h-6 text-slate-500 mb-2 group-hover:text-slate-700 transition-colors" />
-              <p className="text-sm font-semibold text-slate-800">{l.label}</p>
-              <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{l.desc}</p>
+              <l.icon className="w-6 h-6 text-slate-500 dark:text-slate-400 mb-2 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors" />
+              <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{l.label}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">{l.desc}</p>
             </Link>
           ))}
         </div>
@@ -111,7 +112,7 @@ export default function PatientDashboard() {
       {!loading && appointments.length > 0 && (
         <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-slate-900">Recent Appointments</h3>
+            <h3 className="font-semibold text-slate-900 dark:text-slate-100">Recent Appointments</h3>
             <Link to="/patient/appointments" className="text-xs text-blue-600 hover:underline font-medium">
               View all
             </Link>
@@ -120,13 +121,13 @@ export default function PatientDashboard() {
             {appointments.slice(0, 4).map((a) => {
               const sc = STATUS_COLORS[a.status] || STATUS_COLORS.pending;
               return (
-                <div key={a.id} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50">
-                  <div className="w-9 h-9 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div key={a.id} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50">
+                  <div className="w-9 h-9 bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 rounded-xl flex items-center justify-center flex-shrink-0">
                     <CalendarIcon className="w-4 h-4 text-blue-600" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-900 truncate">Dr. {a.doctor_name}</p>
-                    <p className="text-xs text-slate-500">{a.appointment_date} · {a.appointment_time?.slice(0,5)}</p>
+                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">{a.doctor_name}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{a.appointment_date} · {a.appointment_time?.slice(0,5)}</p>
                   </div>
                   <span className={`badge ${sc.bg} ${sc.text} capitalize whitespace-nowrap text-[11px]`}>
                     {a.status.replace(/_/g,' ')}

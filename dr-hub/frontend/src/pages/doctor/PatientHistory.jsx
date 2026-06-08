@@ -156,26 +156,26 @@ export default function PatientHistory() {
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Prescriptions</p>
                         <div className="space-y-2">
                           {r.prescriptions.map((rx, i) => (
-                            <div key={rx.id || i} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-                              <div className="px-4 py-2 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
+                            <div key={rx.id || i} className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+                              <div className="px-4 py-2 bg-slate-50 dark:bg-slate-700/50 border-b border-slate-100 dark:border-slate-700 flex items-center gap-2">
                                 <PillIcon className="w-3.5 h-3.5 text-emerald-600" />
                                 <span className="text-xs font-semibold text-slate-600">
                                   Prescription {i+1} — {new Date(rx.created_at).toLocaleDateString()}
                                 </span>
                               </div>
                               <table className="w-full text-sm">
-                                <thead className="bg-slate-50/50 border-b border-slate-100">
+                                <thead className="bg-slate-50/50 dark:bg-slate-700/30 border-b border-slate-100 dark:border-slate-700">
                                   <tr>
                                     {['Medicine','Dose','Frequency','Duration'].map((h) => (
                                       <th key={h} className="text-left px-4 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wide">{h}</th>
                                     ))}
                                   </tr>
                                 </thead>
-                                <tbody className="divide-y divide-slate-50">
+                                <tbody className="divide-y divide-slate-50 dark:divide-slate-700">
                                   {(rx.medicines || []).map((m, j) => (
                                     <tr key={j}>
-                                      <td className="px-4 py-2 font-medium text-slate-900">{m.name||'—'}</td>
-                                      <td className="px-4 py-2 text-slate-500">{m.dose||'—'}</td>
+                                      <td className="px-4 py-2 font-medium text-slate-900 dark:text-slate-100">{m.name||'—'}</td>
+                                      <td className="px-4 py-2 text-slate-500 dark:text-slate-400">{m.dose||'—'}</td>
                                       <td className="px-4 py-2 text-slate-500">{m.frequency||'—'}</td>
                                       <td className="px-4 py-2 text-slate-500">{m.duration||'—'}</td>
                                     </tr>

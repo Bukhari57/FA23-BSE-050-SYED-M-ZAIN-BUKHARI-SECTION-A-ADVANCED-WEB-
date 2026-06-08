@@ -5,12 +5,12 @@ import {
 } from '../../components/Icons';
 
 const STATUS_CONFIG = {
-  pending:          { bg: 'bg-amber-50',    text: 'text-amber-700',   border: 'border-l-amber-400',   label: 'Pending'          },
-  payment_uploaded: { bg: 'bg-blue-50',     text: 'text-blue-700',    border: 'border-l-blue-400',    label: 'Payment Uploaded' },
-  payment_verified: { bg: 'bg-indigo-50',   text: 'text-indigo-700',  border: 'border-l-indigo-400',  label: 'Payment Verified' },
-  confirmed:        { bg: 'bg-emerald-50',  text: 'text-emerald-700', border: 'border-l-emerald-400', label: 'Confirmed'        },
-  completed:        { bg: 'bg-slate-100',   text: 'text-slate-600',   border: 'border-l-slate-300',   label: 'Completed'        },
-  cancelled:        { bg: 'bg-red-50',      text: 'text-red-600',     border: 'border-l-red-400',     label: 'Cancelled'        },
+  pending:          { bg: 'bg-amber-50 dark:bg-amber-900/30',    text: 'text-amber-700 dark:text-amber-400',    border: 'border-l-amber-400',   label: 'Pending'          },
+  payment_uploaded: { bg: 'bg-blue-50 dark:bg-blue-900/30',     text: 'text-blue-700 dark:text-blue-400',     border: 'border-l-blue-400',    label: 'Payment Uploaded' },
+  payment_verified: { bg: 'bg-indigo-50 dark:bg-indigo-900/30', text: 'text-indigo-700 dark:text-indigo-400', border: 'border-l-indigo-400',  label: 'Payment Verified' },
+  confirmed:        { bg: 'bg-emerald-50 dark:bg-emerald-900/30',text: 'text-emerald-700 dark:text-emerald-400',border: 'border-l-emerald-400', label: 'Confirmed'        },
+  completed:        { bg: 'bg-slate-100 dark:bg-slate-700',      text: 'text-slate-600 dark:text-slate-300',   border: 'border-l-slate-300',   label: 'Completed'        },
+  cancelled:        { bg: 'bg-red-50 dark:bg-red-900/30',       text: 'text-red-600 dark:text-red-400',       border: 'border-l-red-400',     label: 'Cancelled'        },
 };
 
 const STATUSES = ['', 'pending', 'payment_uploaded', 'confirmed', 'completed', 'cancelled'];
@@ -63,7 +63,7 @@ export default function DoctorAppointments() {
 
       {loading ? (
         <div className="space-y-3">
-          {[1,2,3].map((i) => <div key={i} className="card h-28 animate-pulse bg-slate-100" />)}
+          {[1,2,3].map((i) => <div key={i} className="card h-28 animate-pulse bg-slate-100 dark:bg-slate-700" />)}
         </div>
       ) : appointments.length === 0 ? (
         <div className="card p-16 flex flex-col items-center text-center">
@@ -85,7 +85,7 @@ export default function DoctorAppointments() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <p className="font-semibold text-slate-900">{a.patient_name}</p>
+                        <p className="font-semibold text-slate-900 dark:text-slate-100">{a.patient_name}</p>
                         {isToday && (
                           <span className="badge bg-blue-600 text-white text-[11px]">Today</span>
                         )}

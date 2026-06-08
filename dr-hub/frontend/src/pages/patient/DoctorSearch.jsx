@@ -92,12 +92,15 @@ export default function DoctorSearch() {
               <div key={doc.id} className="card p-5 flex flex-col gap-4 hover:shadow-card-md transition-shadow">
                 {/* Doctor info */}
                 <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center flex-shrink-0 font-bold text-blue-700">
-                    {(doc.name || 'D').charAt(0)}
+                  <div className="w-12 h-12 rounded-xl flex-shrink-0 overflow-hidden bg-gradient-to-br from-blue-100 to-blue-200">
+                    {doc.profile_picture_url
+                      ? <img src={doc.profile_picture_url} alt={doc.name} className="w-full h-full object-cover" />
+                      : <span className="w-full h-full flex items-center justify-center font-bold text-blue-700">{(doc.name || 'D').charAt(0)}</span>
+                    }
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <p className="font-semibold text-slate-900 truncate">Dr. {doc.name}</p>
+                      <p className="font-semibold text-slate-900 truncate">{doc.name}</p>
                       <BadgeCheckIcon className="w-4 h-4 text-emerald-500 flex-shrink-0" />
                     </div>
                     <p className="text-sm text-blue-600 font-medium">{doc.specialization}</p>

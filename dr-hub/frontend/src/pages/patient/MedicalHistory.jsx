@@ -105,7 +105,7 @@ export default function MedicalHistory() {
                         )}
                       </div>
                       <p className="text-sm text-slate-500 mt-0.5">
-                        Dr. {r.doctor_name}
+                        {r.doctor_name}
                         {r.specialization && ` · ${r.specialization}`}
                       </p>
                       <p className="text-xs text-slate-400 mt-1">

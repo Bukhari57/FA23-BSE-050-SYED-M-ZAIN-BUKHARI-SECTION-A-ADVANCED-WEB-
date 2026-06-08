@@ -47,15 +47,15 @@ export default function AssistantDashboard() {
 
       {/* Assigned doctor */}
       {assignedDoctor && (
-        <div className="card p-4 flex items-center gap-4 border border-emerald-100 bg-emerald-50/30">
-          <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
+        <div className="card p-4 flex items-center gap-4 border border-emerald-100 dark:border-emerald-900/50 bg-emerald-50/30 dark:bg-emerald-900/10">
+          <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/40 rounded-xl flex items-center justify-center flex-shrink-0">
             <BadgeCheckIcon className="w-5 h-5 text-emerald-600" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Assigned Doctor</p>
-            <p className="text-sm font-semibold text-slate-900 mt-0.5">Dr. {assignedDoctor.name}</p>
+            <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">Assigned Doctor</p>
+            <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 mt-0.5">{assignedDoctor.name}</p>
             {assignedDoctor.specialization && (
-              <p className="text-xs text-slate-500">{assignedDoctor.specialization}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">{assignedDoctor.specialization}</p>
             )}
           </div>
         </div>
@@ -100,16 +100,16 @@ export default function AssistantDashboard() {
 
       {/* CTA */}
       {counts.pending > 0 && (
-        <div className="card border-2 border-amber-100 bg-amber-50/30 p-5 flex items-center justify-between gap-4">
+        <div className="card border-2 border-amber-100 dark:border-amber-900/50 bg-amber-50/30 dark:bg-amber-900/10 p-5 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/40 rounded-xl flex items-center justify-center flex-shrink-0">
               <ClockIcon className="w-5 h-5 text-amber-600" />
             </div>
             <div>
-              <p className="font-semibold text-slate-900">
+              <p className="font-semibold text-slate-900 dark:text-slate-100">
                 {counts.pending} payment{counts.pending > 1 ? 's' : ''} awaiting your review
               </p>
-              <p className="text-sm text-slate-500">Verify or reject uploaded payment screenshots</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Verify or reject uploaded payment screenshots</p>
             </div>
           </div>
           <Link to="/assistant/payments"
@@ -121,16 +121,16 @@ export default function AssistantDashboard() {
 
       <div className="card p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-slate-900">Quick Actions</h3>
+          <h3 className="font-semibold text-slate-900 dark:text-slate-100">Quick Actions</h3>
         </div>
         <Link to="/assistant/payments"
-          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors group">
-          <div className="w-9 h-9 bg-blue-50 rounded-xl flex items-center justify-center">
+          className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors group">
+          <div className="w-9 h-9 bg-blue-50 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
             <CreditCardIcon className="w-4 h-4 text-blue-600" />
           </div>
           <div>
-            <p className="text-sm font-medium text-slate-800">Verify Payments</p>
-            <p className="text-xs text-slate-400">Review payment screenshots from patients</p>
+            <p className="text-sm font-medium text-slate-800 dark:text-slate-200">Verify Payments</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500">Review payment screenshots from patients</p>
           </div>
           <ArrowLeftIcon className="w-4 h-4 text-slate-300 ml-auto rotate-180 group-hover:translate-x-0.5 transition-transform" />
         </Link>

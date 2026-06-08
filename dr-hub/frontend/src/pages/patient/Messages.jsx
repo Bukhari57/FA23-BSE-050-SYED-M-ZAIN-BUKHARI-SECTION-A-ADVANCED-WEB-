@@ -100,7 +100,7 @@ export default function PatientMessages() {
                     {c.name?.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-slate-900 truncate">Dr. {c.name}</p>
+                    <p className="text-sm font-semibold text-slate-900 truncate">{c.name}</p>
                     <p className="text-xs text-slate-400 capitalize mt-0.5">{c.role}</p>
                   </div>
                   <svg className="w-4 h-4 text-slate-300 md:hidden flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -138,7 +138,7 @@ export default function PatientMessages() {
                   {selected.name?.charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-slate-900 text-sm truncate">Dr. {selected.name}</p>
+                  <p className="font-semibold text-slate-900 text-sm truncate">{selected.name}</p>
                   <p className="text-xs text-slate-400">Doctor</p>
                 </div>
               </div>

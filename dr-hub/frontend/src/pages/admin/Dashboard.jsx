@@ -4,6 +4,7 @@ import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend,
 } from 'recharts';
+import { useTheme } from '../../context/ThemeContext';
 import api from '../../api/axios';
 import {
   UsersIcon, UserIcon, ChartBarIcon, CreditCardIcon,
@@ -32,6 +33,7 @@ const APPT_COLORS = {
 const PIE_COLORS = ['#10b981', '#f59e0b', '#ef4444'];
 
 export default function AdminDashboard() {
+  const { dark } = useTheme();
   const [stats, setStats]     = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -123,8 +125,8 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Monthly Trend */}
         <div className="lg:col-span-2 card p-6">
-          <h3 className="font-semibold text-slate-900 mb-1">Monthly Appointments & Revenue</h3>
-          <p className="text-xs text-slate-400 mb-5">Last 6 months overview</p>
+          <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">Monthly Appointments & Revenue</h3>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mb-5">Last 6 months overview</p>
           {stats.monthly_stats?.length > 0 ? (
             <ResponsiveContainer width="100%" height={220}>
               <AreaChart data={stats.monthly_stats} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
@@ -138,11 +140,11 @@ export default function AdminDashboard() {
                     <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="3 3" stroke={dark ? '#334155' : '#f1f5f9'} />
                 <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
                 <Tooltip
-                  contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: 12 }}
+                  contentStyle={{ borderRadius: '12px', border: `1px solid ${dark ? '#334155' : '#e2e8f0'}`, backgroundColor: dark ? '#1e293b' : '#fff', color: dark ? '#e2e8f0' : '#0f172a', fontSize: 12 }}
                   labelStyle={{ fontWeight: 600 }}
                 />
                 <Area type="monotone" dataKey="appointments" name="Appointments" stroke="#2563eb" strokeWidth={2} fill="url(#gradAppts)" dot={{ r: 3, fill: '#2563eb' }} />
@@ -158,8 +160,8 @@ export default function AdminDashboard() {
 
         {/* Payment Status Pie */}
         <div className="card p-6">
-          <h3 className="font-semibold text-slate-900 mb-1">Payment Status</h3>
-          <p className="text-xs text-slate-400 mb-5">All time breakdown</p>
+          <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">Payment Status</h3>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mb-5">All time breakdown</p>
           {paymentPieData.length > 0 ? (
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
@@ -169,8 +171,8 @@ export default function AdminDashboard() {
                     <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: 12 }} />
-                <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
+                <Tooltip contentStyle={{ borderRadius: '12px', border: `1px solid ${dark ? '#334155' : '#e2e8f0'}`, backgroundColor: dark ? '#1e293b' : '#fff', color: dark ? '#e2e8f0' : '#0f172a', fontSize: 12 }} />
+                <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12, color: dark ? '#94a3b8' : '#475569' }} />
               </PieChart>
             </ResponsiveContainer>
           ) : (
@@ -183,14 +185,14 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Appointment breakdown bar */}
         <div className="lg:col-span-2 card p-6">
-          <h3 className="font-semibold text-slate-900 mb-1">Appointment Status Breakdown</h3>
-          <p className="text-xs text-slate-400 mb-5">Current status of all appointments</p>
+          <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-1">Appointment Status Breakdown</h3>
+          <p className="text-xs text-slate-400 dark:text-slate-500 mb-5">Current status of all appointments</p>
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={apptBarData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke={dark ? '#334155' : '#f1f5f9'} vertical={false} />
               <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-              <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: 12 }} />
+              <Tooltip contentStyle={{ borderRadius: '12px', border: `1px solid ${dark ? '#334155' : '#e2e8f0'}`, backgroundColor: dark ? '#1e293b' : '#fff', color: dark ? '#e2e8f0' : '#0f172a', fontSize: 12 }} />
               <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                 {apptBarData.map((entry, i) => (
                   <Cell key={i} fill={Object.values(APPT_COLORS)[i] || '#94a3b8'} />
@@ -202,30 +204,30 @@ export default function AdminDashboard() {
 
         {/* Quick actions */}
         <div className="card p-6">
-          <h3 className="font-semibold text-slate-900 mb-4">Quick Actions</h3>
+          <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">Quick Actions</h3>
           <div className="space-y-2">
             {[
-              { to: '/admin/users',   label: 'Manage Users',        icon: UsersIcon,      color: 'text-blue-600 bg-blue-50' },
-              { to: '/admin/doctors', label: 'Verify Doctors',      icon: BadgeCheckIcon, color: 'text-emerald-600 bg-emerald-50' },
-              { to: '/admin/clinics', label: 'View Clinics',        icon: BuildingIcon,   color: 'text-purple-600 bg-purple-50' },
+              { to: '/admin/users',   label: 'Manage Users',        icon: UsersIcon,      color: 'text-blue-600 bg-blue-50 dark:bg-blue-900/30' },
+              { to: '/admin/doctors', label: 'Verify Doctors',      icon: BadgeCheckIcon, color: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30' },
+              { to: '/admin/clinics', label: 'View Clinics',        icon: BuildingIcon,   color: 'text-purple-600 bg-purple-50 dark:bg-purple-900/30' },
             ].map((l) => (
               <Link key={l.to} to={l.to}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors group">
+                className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors group">
                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${l.color}`}>
                   <l.icon className="w-4 h-4" />
                 </div>
-                <span className="text-sm font-medium text-slate-700 group-hover:text-slate-900">{l.label}</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-slate-100">{l.label}</span>
                 <ArrowLeftIcon className="w-3.5 h-3.5 text-slate-300 ml-auto rotate-180 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             ))}
           </div>
 
           {stats.doctors.pending_verification > 0 && (
-            <div className="mt-4 p-3 bg-amber-50 border border-amber-100 rounded-xl">
-              <p className="text-xs font-semibold text-amber-700">
+            <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/50 rounded-xl">
+              <p className="text-xs font-semibold text-amber-700 dark:text-amber-400">
                 {stats.doctors.pending_verification} doctor(s) pending verification
               </p>
-              <Link to="/admin/doctors" className="text-xs text-amber-600 hover:underline mt-0.5 inline-block font-medium">
+              <Link to="/admin/doctors" className="text-xs text-amber-600 dark:text-amber-400 hover:underline mt-0.5 inline-block font-medium">
                 Review now →
               </Link>
             </div>

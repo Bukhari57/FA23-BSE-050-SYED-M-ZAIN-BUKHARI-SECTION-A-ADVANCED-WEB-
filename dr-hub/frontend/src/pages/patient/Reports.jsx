@@ -136,7 +136,7 @@ export default function PatientReports() {
             className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all duration-150 border ${
               category === c.value
                 ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-                : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300 hover:text-blue-600'
+                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-600 hover:border-blue-300 hover:text-blue-600'
             }`}>
             {c.label}
           </button>
@@ -144,7 +144,7 @@ export default function PatientReports() {
         <select
           value={CATEGORIES.slice(6).find((c) => c.value === category)?.value || ''}
           onChange={(e) => setCategory(e.target.value)}
-          className="px-3 py-1.5 rounded-xl text-xs font-medium border border-slate-200 bg-white text-slate-600 focus:outline-none focus:border-blue-400"
+          className="px-3 py-1.5 rounded-xl text-xs font-medium border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 focus:outline-none focus:border-blue-400"
         >
           <option value="">More…</option>
           {CATEGORIES.slice(6).map((c) => (
@@ -209,7 +209,7 @@ export default function PatientReports() {
               {r.notes && <p className="text-xs text-slate-500 italic mb-3 line-clamp-2">{r.notes}</p>}
 
               {/* Actions */}
-              <div className="flex gap-2 pt-2 border-t border-slate-100">
+              <div className="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
                 <a
                   href={r.file_path}
                   target="_blank"
@@ -240,10 +240,10 @@ export default function PatientReports() {
       {/* Upload Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-card-lg w-full max-w-md animate-slide-up">
-            <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-100">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-card-lg w-full max-w-md animate-slide-up">
+            <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-slate-100 dark:border-slate-700">
               <div>
-                <h3 className="font-bold text-slate-900">Upload Medical Report</h3>
+                <h3 className="font-bold text-slate-900 dark:text-slate-100">Upload Medical Report</h3>
                 <p className="text-xs text-slate-400 mt-0.5">Supported: JPG, PNG, PDF (max 10 MB)</p>
               </div>
               <button onClick={() => setShowModal(false)} className="btn-ghost p-2">
@@ -279,7 +279,7 @@ export default function PatientReports() {
               <div>
                 <label className="label">File</label>
                 <label className={`flex flex-col items-center justify-center w-full h-28 border-2 border-dashed rounded-xl cursor-pointer transition-colors ${
-                  file ? 'border-blue-400 bg-blue-50' : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'
+                  file ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-200 dark:border-slate-600 hover:border-blue-300 hover:bg-slate-50 dark:hover:bg-slate-700/50'
                 }`}>
                   {file ? (
                     <div className="text-center">
@@ -290,8 +290,8 @@ export default function PatientReports() {
                   ) : (
                     <div className="text-center">
                       <UploadIcon className="w-6 h-6 text-slate-400 mx-auto mb-1" />
-                      <p className="text-sm text-slate-500">Click to browse or drag & drop</p>
-                      <p className="text-xs text-slate-400">JPG, PNG, PDF up to 10 MB</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">Click to browse or drag & drop</p>
+                      <p className="text-xs text-slate-400 dark:text-slate-500">JPG, PNG, PDF up to 10 MB</p>
                     </div>
                   )}
                   <input type="file" accept=".jpg,.jpeg,.png,.pdf" className="hidden"

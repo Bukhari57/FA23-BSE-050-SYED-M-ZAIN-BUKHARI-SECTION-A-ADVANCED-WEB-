@@ -7,12 +7,12 @@ import {
 const STATUSES = ['', 'pending', 'payment_uploaded', 'payment_verified', 'confirmed', 'completed', 'cancelled'];
 
 const STATUS_CONFIG = {
-  pending:          { bg: 'bg-amber-50',    text: 'text-amber-700',   border: 'border-amber-200',   label: 'Pending Payment'   },
-  payment_uploaded: { bg: 'bg-blue-50',     text: 'text-blue-700',    border: 'border-blue-200',    label: 'Payment Uploaded'  },
-  payment_verified: { bg: 'bg-indigo-50',   text: 'text-indigo-700',  border: 'border-indigo-200',  label: 'Payment Verified'  },
-  confirmed:        { bg: 'bg-emerald-50',  text: 'text-emerald-700', border: 'border-emerald-200', label: 'Confirmed'         },
-  completed:        { bg: 'bg-slate-100',   text: 'text-slate-600',   border: 'border-slate-200',   label: 'Completed'         },
-  cancelled:        { bg: 'bg-red-50',      text: 'text-red-600',     border: 'border-red-200',     label: 'Cancelled'         },
+  pending:          { bg: 'bg-amber-50 dark:bg-amber-900/30',    text: 'text-amber-700 dark:text-amber-400',    border: 'border-amber-200 dark:border-amber-800',   label: 'Pending Payment'   },
+  payment_uploaded: { bg: 'bg-blue-50 dark:bg-blue-900/30',     text: 'text-blue-700 dark:text-blue-400',     border: 'border-blue-200 dark:border-blue-800',    label: 'Payment Uploaded'  },
+  payment_verified: { bg: 'bg-indigo-50 dark:bg-indigo-900/30', text: 'text-indigo-700 dark:text-indigo-400', border: 'border-indigo-200 dark:border-indigo-800', label: 'Payment Verified'  },
+  confirmed:        { bg: 'bg-emerald-50 dark:bg-emerald-900/30',text: 'text-emerald-700 dark:text-emerald-400',border: 'border-emerald-200 dark:border-emerald-800',label: 'Confirmed'         },
+  completed:        { bg: 'bg-slate-100 dark:bg-slate-700',      text: 'text-slate-600 dark:text-slate-300',   border: 'border-slate-200 dark:border-slate-600',   label: 'Completed'         },
+  cancelled:        { bg: 'bg-red-50 dark:bg-red-900/30',       text: 'text-red-600 dark:text-red-400',       border: 'border-red-200 dark:border-red-800',       label: 'Cancelled'         },
 };
 
 export default function MyAppointments() {
@@ -74,7 +74,7 @@ export default function MyAppointments() {
 
       {loading ? (
         <div className="space-y-4">
-          {[1,2,3].map((i) => <div key={i} className="card h-36 animate-pulse bg-slate-100" />)}
+          {[1,2,3].map((i) => <div key={i} className="card h-36 animate-pulse bg-slate-100 dark:bg-slate-700" />)}
         </div>
       ) : appointments.length === 0 ? (
         <div className="card p-16 flex flex-col items-center text-center">
@@ -96,11 +96,14 @@ export default function MyAppointments() {
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-start gap-3 flex-1 min-w-0">
                     {/* Doctor avatar */}
-                    <div className="w-11 h-11 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <UserIcon className="w-5 h-5 text-blue-600" />
+                    <div className="w-11 h-11 rounded-xl flex-shrink-0 overflow-hidden bg-gradient-to-br from-blue-100 to-blue-200">
+                      {a.profile_picture_url
+                        ? <img src={a.profile_picture_url} alt={a.doctor_name} className="w-full h-full object-cover" />
+                        : <div className="w-full h-full flex items-center justify-center"><UserIcon className="w-5 h-5 text-blue-600" /></div>
+                      }
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-slate-900">Dr. {a.doctor_name}</p>
+                      <p className="font-semibold text-slate-900 dark:text-slate-100">{a.doctor_name}</p>
                       <p className="text-sm text-slate-500 mt-0.5">{a.specialization}</p>
                       <div className="flex flex-wrap gap-3 mt-2 text-xs text-slate-500">
                         <span className="flex items-center gap-1">
@@ -135,9 +138,49 @@ export default function MyAppointments() {
                   </div>
                 </div>
 
+                {/* Payment Info — shown when patient needs to send money */}
+                {needsPayment && (a.bank_account_number || a.jazzcash_number || a.easypaisa_number || a.qr_code_url) && (
+                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700">
+                    <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">Send Payment To</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {a.bank_account_number && (
+                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-3">
+                          <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">Bank Transfer</p>
+                          {a.bank_name && <p className="text-xs font-semibold text-slate-700 dark:text-slate-200 mt-0.5">{a.bank_name}</p>}
+                          {a.account_title && <p className="text-xs text-slate-500 dark:text-slate-400">{a.account_title}</p>}
+                          <p className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-1 font-mono tracking-wide">{a.bank_account_number}</p>
+                        </div>
+                      )}
+                      {(a.jazzcash_number || a.easypaisa_number) && (
+                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-3 space-y-2">
+                          {a.jazzcash_number && (
+                            <div>
+                              <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">JazzCash</p>
+                              <p className="text-sm font-bold text-slate-900 dark:text-slate-100 font-mono">{a.jazzcash_number}</p>
+                            </div>
+                          )}
+                          {a.easypaisa_number && (
+                            <div>
+                              <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">EasyPaisa</p>
+                              <p className="text-sm font-bold text-slate-900 dark:text-slate-100 font-mono">{a.easypaisa_number}</p>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    {a.qr_code_url && (
+                      <div className="mt-3">
+                        <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mb-1.5">Scan QR Code to Pay</p>
+                        <img src={a.qr_code_url} alt="Payment QR Code"
+                          className="w-36 h-36 object-contain border border-slate-200 dark:border-slate-600 rounded-xl bg-white p-1" />
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Actions */}
                 {(needsPayment || canCancel) && (
-                  <div className="flex gap-2 mt-4 pt-3 border-t border-slate-100">
+                  <div className="flex gap-2 mt-4 pt-3 border-t border-slate-100 dark:border-slate-700">
                     {needsPayment && (
                       <label className={`btn-primary text-xs py-2 cursor-pointer ${uploading === a.id ? 'opacity-60 pointer-events-none' : ''}`}>
                         {uploading === a.id ? (

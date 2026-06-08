@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,6 +7,8 @@
 @layer base {
   *, *::before, *::after { box-sizing: border-box; }
 
+  html { scroll-behavior: smooth; }
+
   body {
     margin: 0;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -14,64 +16,90 @@
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv11', 'ss01';
   }
+
+  .dark body { background-color: #0f172a; }
 
   #root { width: 100%; min-height: 100vh; }
 
-  /* Custom scrollbar */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  /* Scrollbar — light */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
   ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+  /* Scrollbar — dark */
+  .dark ::-webkit-scrollbar-thumb { background: #334155; }
+  .dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
 }
 
 @layer components {
-  /* Premium card */
+
+  /* ── Cards ── */
   .card {
-    @apply bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700;
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.07);
+    @apply bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/80;
+    box-shadow: 0 1px 4px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  }
+
+  .card-hover {
+    @apply card transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-slate-200 dark:hover:border-slate-600;
   }
 
   /* Gradient stat cards */
   .stat-card {
-    @apply rounded-2xl p-6 text-white relative overflow-hidden;
+    @apply rounded-2xl p-5 text-white relative overflow-hidden;
+    box-shadow: 0 4px 15px -3px rgb(0 0 0 / 0.15);
   }
   .stat-card::before {
     content: '';
-    @apply absolute -bottom-4 -right-4 w-24 h-24 bg-white/10 rounded-full;
+    @apply absolute -bottom-3 -right-3 w-20 h-20 bg-white/10 rounded-full;
   }
   .stat-card::after {
     content: '';
-    @apply absolute -bottom-8 -right-8 w-32 h-32 bg-white/5 rounded-full;
+    @apply absolute -bottom-7 -right-7 w-28 h-28 bg-white/5 rounded-full;
   }
 
-  /* Form controls */
+  /* ── Form controls ── */
   .input {
-    @apply w-full border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5
+    @apply w-full border border-slate-200 dark:border-slate-600/80 rounded-xl px-4 py-2.5
            text-sm text-slate-900 dark:text-slate-100
            placeholder:text-slate-400 dark:placeholder:text-slate-500
-           bg-white dark:bg-slate-700
-           focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500
-           transition-all duration-150;
+           bg-white dark:bg-slate-800/80
+           focus:outline-none focus:ring-2 focus:ring-blue-500/25 focus:border-blue-500 dark:focus:border-blue-500
+           transition-all duration-200;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+
+  .input-icon {
+    @apply relative;
+  }
+  .input-icon input {
+    @apply input pl-10;
+  }
+  .input-icon svg {
+    @apply absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none;
   }
 
   .label {
-    @apply block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5;
+    @apply block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5;
   }
 
-  /* Buttons */
+  /* ── Buttons ── */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2
            bg-blue-600 hover:bg-blue-700 active:bg-blue-800
-           text-white text-sm font-medium px-4 py-2.5 rounded-xl
-           transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+           text-white text-sm font-semibold px-4 py-2.5 rounded-xl
+           transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed
+           shadow-sm shadow-blue-500/20 hover:shadow-md hover:shadow-blue-500/25;
   }
 
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2
-           bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600
-           text-slate-700 dark:text-slate-200 text-sm font-medium px-4 py-2.5 rounded-xl
-           transition-all duration-150;
+           bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600
+           border border-slate-200 dark:border-slate-600
+           text-slate-700 dark:text-slate-200 text-sm font-semibold px-4 py-2.5 rounded-xl
+           transition-all duration-150 shadow-sm;
   }
 
   .btn-ghost {
@@ -83,26 +111,90 @@
 
   .btn-danger {
     @apply inline-flex items-center justify-center gap-2
-           bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600
-           text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-150;
+           bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/30
+           border border-red-100 dark:border-red-800/50
+           text-red-600 dark:text-red-400
+           text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-150;
   }
 
-  /* Status badges */
+  /* ── Badges ── */
   .badge {
     @apply inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full;
   }
 
-  /* Page header */
+  /* ── Page headers ── */
   .page-header {
-    @apply text-2xl font-bold text-slate-900 dark:text-slate-100;
+    @apply text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight;
   }
 
   .page-subtitle {
     @apply text-sm text-slate-500 dark:text-slate-400 mt-0.5;
   }
+
+  /* ── Dividers ── */
+  .section-label {
+    @apply text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 px-3 mb-1.5 mt-4 first:mt-0;
+  }
+
+  /* ── Dropdown panels ── */
+  .dropdown {
+    @apply absolute z-50 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 overflow-hidden;
+    box-shadow: 0 10px 40px -10px rgb(0 0 0 / 0.15), 0 2px 8px -2px rgb(0 0 0 / 0.08);
+  }
 }
 
-/* Print styles */
+@layer utilities {
+  /* Animations */
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes slide-in-left {
+    from { opacity: 0; transform: translateX(-12px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .animate-fade-in    { animation: fade-in 0.25s ease-out both; }
+  .animate-slide-up   { animation: slide-up 0.2s ease-out both; }
+  .animate-slide-in-left { animation: slide-in-left 0.2s ease-out both; }
+  .animate-scale-in   { animation: scale-in 0.15s ease-out both; }
+
+  /* Skeleton shimmer */
+  .skeleton {
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    @apply rounded-xl;
+  }
+  .dark .skeleton {
+    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+    background-size: 200% 100%;
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border border-white/20 dark:border-slate-700/50;
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent;
+  }
+}
+
+/* Print */
 @media print {
   .no-print { display: none !important; }
   body { background: white !important; }

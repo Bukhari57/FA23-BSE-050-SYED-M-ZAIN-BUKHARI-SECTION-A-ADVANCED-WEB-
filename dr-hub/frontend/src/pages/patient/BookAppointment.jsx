@@ -105,7 +105,7 @@ export default function BookAppointment() {
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h2 className="font-bold text-slate-900 text-lg">Dr. {doctor.name}</h2>
+            <h2 className="font-bold text-slate-900 text-lg">{doctor.name}</h2>
             <BadgeCheckIcon className="w-5 h-5 text-emerald-500" />
           </div>
           <p className="text-blue-600 font-medium text-sm">{doctor.specialization}</p>
@@ -199,14 +199,14 @@ export default function BookAppointment() {
                         className={`px-4 py-2 rounded-xl text-sm font-medium border-2 transition-all ${
                           form.appointment_time === s.time
                             ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-                            : 'bg-white text-slate-700 border-slate-200 hover:border-blue-400 hover:text-blue-600'
+                            : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-600 hover:border-blue-400 hover:text-blue-600'
                         }`}>
                         {s.time}
                       </button>
                     ))}
                     {unavailableSlots.map((s) => (
                       <button key={s.time} type="button" disabled
-                        className="px-4 py-2 rounded-xl text-sm font-medium border-2 bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed line-through">
+                        className="px-4 py-2 rounded-xl text-sm font-medium border-2 bg-slate-50 dark:bg-slate-800 text-slate-300 dark:text-slate-600 border-slate-100 dark:border-slate-700 cursor-not-allowed line-through">
                         {s.time}
                       </button>
                     ))}

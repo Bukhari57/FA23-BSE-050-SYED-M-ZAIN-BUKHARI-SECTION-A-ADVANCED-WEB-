@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
+import ChatWidget from './components/ChatWidget';
 
 import Login          from './pages/auth/Login';
 import Register       from './pages/auth/Register';
@@ -37,6 +38,7 @@ import AdminClinics       from './pages/admin/Clinics';
 
 function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user } = useAuth();
   return (
     <div className="min-h-screen flex bg-slate-100 dark:bg-slate-900">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
@@ -46,6 +48,7 @@ function AppLayout() {
           <Outlet />
         </main>
       </div>
+      {user?.role === 'patient' && <ChatWidget />}
     </div>
   );
 }
