@@ -236,7 +236,7 @@ const sendMessage = async (req, res, next) => {
 
     const userText = message.trim();
     const hasUrduScript  = /[؀-ۿ]/.test(userText);
-    const hasRomanUrdu   = !hasUrduScript && /\b(ap|aap|kya|kia|hai|hain|ho|kesy|kee|mujhe|kaise|chahiye|chahte|batao|bata|naam|nahi|nhi|theek|mera|meri|wala|wali|dhundna|dikhao|karo|yahan|wahan|kitna|kab|kyun|kuch|sab|hoga|raha|rahi|rhe|kal|aaj|abhi|zaroor|shukriya|shukriya|meherbani|janab|bhai|plz|thx|bohat|bohot|bilkul|zarur|pata|samajh|samjhe|lagta|lagti|doctor|dr|appointment|clinic|karo|kerna|karna)\b/i.test(userText);
+    const hasRomanUrdu   = !hasUrduScript && /\b(ap|aap|kya|kia|hai|hain|ho|kesy|kee|mujhe|kaise|chahiye|chahte|batao|bata|naam|nahi|nhi|theek|mera|meri|wala|wali|dhundna|dikhao|karo|yahan|wahan|kitna|kab|kyun|kuch|sab|hoga|raha|rahi|rhe|kal|aaj|abhi|zaroor|shukriya|meherbani|janab|bhai|plz|thx|bohat|bohot|bilkul|zarur|pata|samajh|samjhe|lagta|lagti|doctor|dr|appointment|clinic|karo|kerna|karna|karun|karein|karain|dekhna|milna|book|fee|slot|available|zyada|kam|band|waqt|tarikh|ghanta|minute|salam|assalam|walaikum|theek|accha|acha|wah|bhai|yaar|dost|haan|nahi|chalo|phir|dobara|abhi|pehle|baad|sath|bina|liye|ko|se|mein|per|tak|tha|thi|the|ho|hain|hoon)\b/i.test(userText);
 
     const langInstruction = hasUrduScript
       ? `CRITICAL LANGUAGE RULE: Reply in Pakistani Urdu script ONLY.
@@ -245,11 +245,13 @@ const sendMessage = async (req, res, next) => {
 - STRICTLY FORBIDDEN: Roman/English letters in your reply
 - Write foreign words in Urdu script: "ڈاکٹر", "پلیٹ فارم", "ایپوائنٹمنٹ"`
       : hasRomanUrdu
-      ? `CRITICAL LANGUAGE RULE: The user is writing in Roman Urdu. Reply in Roman Urdu ONLY.
-- Write ALL Urdu words using English/Latin letters exactly like the user does (e.g. "ap ka appointment book ho gaya", "doctor dhundne ke liye Doctors section mein jayen")
-- FORBIDDEN: Urdu/Arabic script characters
-- FORBIDDEN: formal English sentences
-- Match the user's casual Roman Urdu tone and spelling style exactly`
+      ? `CRITICAL LANGUAGE RULE: The user is writing in Roman Urdu (Urdu words spelled in English letters).
+YOU MUST reply in Roman Urdu ONLY — every single word must be in Roman Urdu.
+- Write ALL words in English/Latin letters just like the user: e.g. "Theek hai, ap ka appointment book ho gaya. Doctor dhundne ke liye Find Doctors mein jayen."
+- FORBIDDEN: ANY Urdu/Arabic script characters (ا ب پ etc.)
+- FORBIDDEN: Devanagari script
+- FORBIDDEN: switching to English sentences
+- Mirror the user's casual spelling and tone exactly. If they write "kesy ho" reply like "Bilkul theek hoon, shukriya! Ap batao, kya madad kar sakta hoon?"`
       : 'CRITICAL LANGUAGE RULE: Reply in English ONLY. Do not use any Urdu, Arabic, Hindi, or Devanagari characters.';
 
     // Detect intent and fetch real data

@@ -5,7 +5,8 @@ import { ThemeProvider } from './context/ThemeContext';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
-import ChatWidget from './components/ChatWidget';
+import ChatWidget  from './components/ChatWidget';
+import VoiceAgent  from './components/VoiceAgent';
 
 import Login          from './pages/auth/Login';
 import Register       from './pages/auth/Register';
@@ -49,6 +50,7 @@ function AppLayout() {
         </main>
       </div>
       {user?.role === 'patient' && <ChatWidget />}
+      <VoiceAgent above={user?.role === 'patient'} />
     </div>
   );
 }

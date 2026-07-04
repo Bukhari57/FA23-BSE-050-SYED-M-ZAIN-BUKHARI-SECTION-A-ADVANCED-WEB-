@@ -55,6 +55,7 @@ app.use('/api/admin', require('./src/routes/admin'));
 app.use('/api/reports', require('./src/routes/reports'));
 app.use('/api/messages', require('./src/routes/messages'));
 app.use('/api/chat',    require('./src/routes/chat'));
+app.use('/api/voice',   require('./src/routes/voice'));
 
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Doctor Hub API is running' });

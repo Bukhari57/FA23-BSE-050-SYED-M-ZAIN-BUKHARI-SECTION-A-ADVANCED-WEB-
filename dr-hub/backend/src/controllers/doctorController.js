@@ -70,7 +70,7 @@ const getDoctors = async (req, res, next) => {
       SELECT
         d.id, d.specialization, d.treatment_type, d.experience_years,
         d.qualification, d.consultation_fee, d.bio, d.profile_picture_url,
-        u.name, u.email, u.phone,
+        u.name,
         COALESCE(
           json_agg(DISTINCT dd.disease_name) FILTER (WHERE dd.disease_name IS NOT NULL),
           '[]'
@@ -86,7 +86,7 @@ const getDoctors = async (req, res, next) => {
       LEFT JOIN doctor_clinics dc ON dc.doctor_id = d.id
       LEFT JOIN clinics c ON c.id = dc.clinic_id
       ${where}
-      GROUP BY d.id, u.name, u.email, u.phone
+      GROUP BY d.id, u.name
       ORDER BY d.experience_years DESC
       LIMIT $${params.length - 1} OFFSET $${params.length}
     `;
@@ -116,7 +116,7 @@ const getDoctorById = async (req, res, next) => {
       `SELECT
         d.id, d.specialization, d.treatment_type, d.experience_years,
         d.qualification, d.consultation_fee, d.bio, d.is_verified,
-        u.name, u.email, u.phone,
+        u.name,
         COALESCE(
           json_agg(DISTINCT dd.disease_name) FILTER (WHERE dd.disease_name IS NOT NULL),
           '[]'
@@ -142,11 +142,14 @@ const getDoctorById = async (req, res, next) => {
       LEFT JOIN clinics c ON c.id = dc.clinic_id
       LEFT JOIN doctor_schedules ds ON ds.doctor_id = d.id
       WHERE d.id = $1
-      GROUP BY d.id, u.name, u.email, u.phone`,
+      GROUP BY d.id, u.name`,
       [id]
     );
 
     if (!rows.length) return error(res, 'Doctor not found.', 404);
+    // Do not expose contact details (email/phone) on the public endpoint.
+    // If the requester is authenticated and has appropriate privileges,
+    // they can retrieve contact info via the protected `profile/me` endpoint.
     return success(res, rows[0]);
   } catch (err) {
     next(err);

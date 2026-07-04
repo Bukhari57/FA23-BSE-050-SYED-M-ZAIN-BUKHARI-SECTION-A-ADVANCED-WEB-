@@ -344,7 +344,7 @@ export default function ChatWidget() {
               {loading && (
                 <div className="flex items-end gap-2.5">
                   <div className="mb-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow shadow-blue-300/40 dark:shadow-blue-900/40">
-                    <SparklesIcon className="h-3.5 w-3.5 text-white" />
+                    <MedAISmall className="h-3.5 w-3.5 text-white" />
                   </div>
                   <div className="rounded-2xl rounded-bl-md border border-slate-200/70 dark:border-slate-700/70 bg-slate-50 dark:bg-slate-800 px-4 py-3">
                     <div className="flex h-4 items-center gap-1">
